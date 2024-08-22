@@ -6,7 +6,7 @@ on:
       - 'feature/*'
 
 jobs:
-  build:
+  lint-sec-build:
     runs-on: ubuntu-latest
 
     steps:
