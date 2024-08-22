@@ -1,4 +1,4 @@
-name: To dev branch ci
+name: Pull request to dev branch CI
 
 on:
   pull_request:
