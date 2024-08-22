@@ -1,12 +1,14 @@
-name: Feature branch ci
+name: To dev branch ci
 
 on:
   pull_request:
     branches:
-      - 'feature/*'
+      - 'dev'
 
 jobs:
-  lint-sec-build:
+  lint-scan-build:
+    if: startsWith(github.head_ref, 'feature/')
+    name: Linting, Vulnerability Scanning and Building
     runs-on: ubuntu-latest
 
     steps:
