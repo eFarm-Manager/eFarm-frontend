@@ -1,0 +1,33 @@
+name: Pull request to dev branch CI
+
+on:
+  pull_request:
+    branches:
+      - 'develop'
+
+jobs:
+  lint-scan-build:
+    if: startsWith(github.head_ref, 'feature/')
+    name: Linting, Vulnerability Scanning and Building
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Lint code
+      run: npm run lint
+
+    - name: Run security audit
+      run: npm audit --audit-level=high
+
+    - name: Build React app
+      run: npm run build
