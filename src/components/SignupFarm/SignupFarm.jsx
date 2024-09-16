@@ -27,7 +27,7 @@ const SignupFarm = () => {
         setErrorMessage('');
 
         try {
-            const response = await fetch('http://localhost:8080/api/auth/signupfarm', {
+            const response = await fetch('/api/auth/signupfarm', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
