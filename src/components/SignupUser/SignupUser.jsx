@@ -6,7 +6,7 @@ const SignupUser = () => {
         lastName: '',
         username: '',
         email: '',
-        role: 'ROLE_FARM_OPERATOR', // Domyślna rola
+        role: 'ROLE_FARM_EQUIPMENT_OPERATOR', // Domyślna rola
         password: '',
         phoneNumber: ''
     });
@@ -36,7 +36,7 @@ const SignupUser = () => {
         const token = localStorage.getItem('jwtToken');  // Pobierz JWT z localStorage
 
         try {
-            const response = await fetch('http://localhost:8080/api/auth/signup', {
+            const response = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,9 +105,9 @@ const SignupUser = () => {
                     onChange={handleInputChange}
                 />
                 <select name="role" value={formData.role} onChange={handleRoleChange}>
-                    <option value="ROLE_FARM_OPERATOR">Farm Operator</option>
-                    <option value="ROLE_FARM_MANAGER">Farm Manager</option>
-                    <option value="ROLE_FARM_OWNER">Farm Owner</option>
+                    <option value="ROLE_FARM_EQUIPMENT_OPERATOR">Operator</option>
+                    <option value="ROLE_FARM_MANAGER">Manager</option>
+                    <option value="ROLE_FARM_OWNER">Właściciel</option>
                 </select>
                 <button type="submit">Submit</button>
             </form>

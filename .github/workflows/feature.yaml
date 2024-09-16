@@ -1,15 +1,13 @@
 name: Pull request to dev branch CI
 
 on:
-  pull_request:
+  push:
     branches:
-      - 'develop'
+      - 'feature/*'
+      - 'bugfix/*'
 
 jobs:
   secret-scanning:
-    if: |
-      startsWith(github.head_ref, 'feature/') || 
-      startsWith(github.head_ref, 'bugfix/')
     name: Secret Scanning
     runs-on: ubuntu-latest
     steps:
@@ -19,13 +17,9 @@ jobs:
       - name: Secret Scanning
         uses: secret-scanner/action@0.0.2
 
-  lint-scan-unit:
-    if: |
-      startsWith(github.head_ref, 'feature/') || 
-      startsWith(github.head_ref, 'bugfix/')
-    name: Lint, Scan and Unit Test
+  lint-scan:
+    name: Lint, Scan
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -35,8 +29,8 @@ jobs:
       with:
         node-version: 20
     
-    - name: Cache Node.js modules
-      uses: actions/cache@v4
+    - name: Restore Node.js modules
+      uses: actions/cache/restore@v4
       with:
         path: ~/.npm 
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
