@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const SignupFarm = () => {
     const [formData, setFormData] = useState({
@@ -36,7 +36,7 @@ const SignupFarm = () => {
             });
 
             if (response.ok) {
-                const data = await response.json();
+                await response.json();
                 setResponseMessage('Registration successful!');  // Success feedback
             } else {
                 const errorData = await response.json();
