@@ -1,4 +1,4 @@
-name: Pull request to dev branch CI
+name: Secret scanning and Lint on feature/ branch
 
 on:
   push:
