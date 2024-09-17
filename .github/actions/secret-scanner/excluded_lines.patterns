@@ -1,1 +1,1 @@
-^\s+imageTag\s*:.*$
+^\s+tag\s*:.*$
