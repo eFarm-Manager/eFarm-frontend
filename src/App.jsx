@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.jsx
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Zaktualizowane importy
+import SignupFarm from './components/SignupFarm/SignupFarm';
+import SignupUser from './components/SignupUser/SignupUser';
+import SignIn from './components/SignIn/SignIn';
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+const App = () => {
+    return (
+        <Router>
+            <div style={{ padding: '20px' }}>
+                <h1>Witamy na stronie</h1>
 
-export default App
+                {/* Przyciski do różnych stron */}
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <Link to="/signup-farm">
+                        <button>Zarejestruj Farmę</button>
+                    </Link>
+                    <Link to="/signup-user">
+                        <button>Zarejestruj Użytkownika</button>
+                    </Link>
+                    <Link to="/sign-in">
+                        <button>Zaloguj się</button>
+                    </Link>
+                </div>
+
+                {/* Definiowanie ścieżek do odpowiednich komponentów */}
+                <Routes>
+                    <Route path="/signup-farm" element={<SignupFarm />} />
+                    <Route path="/signup-user" element={<SignupUser />} />
+                    <Route path="/sign-in" element={<SignIn />} />
+                </Routes>
+            </div>
+        </Router>
+    );
+};
+
+export default App;

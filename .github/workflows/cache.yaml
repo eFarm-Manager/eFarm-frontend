@@ -1,13 +1,13 @@
-name: Cache Dependencies And CodeQL
+name: Cache on main branch
 
 on:
   push:
     branches:
-      - 'develop'
+      - 'main'
       
 jobs:
-  cache-codeql:
-    name: Make Cache and Scan with CodeQL
+  cache-main:
+    name: Cache
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -18,25 +18,16 @@ jobs:
       with:
         node-version: 20
 
-    - name: Cache Node.js modules
-      id: cache-npm
+    - name: Cache Npm dependencies
       uses: actions/cache@v4
       with:
         path: ~/.npm 
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-node-
-        
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: 'javascript'
+            ${{ runner.os }}-node-
 
     - name: Install dependencies
       run: npm ci
 
     - name: Build React app
-      run: npm run build    
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3  
+      run: npm run build  
