@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -6,6 +7,7 @@ const SignIn = () => {
         password: ''
     });
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setFormData({
@@ -13,10 +15,25 @@ const SignIn = () => {
             [e.target.name]: e.target.value
         });
     };
+    const validateForm = () => {
+        if (!formData.username.trim()) {
+            return 'Username is required.';
+        }
+        if (!formData.password.trim()) {
+            return 'Password is required.';
+        }
+        return null;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage('');
+
+        const validationError = validateForm();
+        if (validationError) {
+            setErrorMessage(validationError);
+            return;
+        }
 
         try {
             const response = await fetch('/api/auth/signin', {
@@ -31,6 +48,7 @@ const SignIn = () => {
                 const data = await response.json();
                 localStorage.setItem('jwtToken', data.token); // Zapisz token w localStorage
                 alert('Login successful!');
+                navigate('/dashboard');
             } else {
                 setErrorMessage('Invalid login credentials.');
             }

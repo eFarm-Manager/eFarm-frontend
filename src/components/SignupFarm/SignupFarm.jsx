@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignupFarm = () => {
     const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const SignupFarm = () => {
     });
     const [responseMessage, setResponseMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setFormData({
@@ -21,10 +23,45 @@ const SignupFarm = () => {
         });
     };
 
+    const validateForm = () => {
+        if (formData.firstName.length < 3 || formData.firstName.length > 30) {
+            return 'First name must be between 3 and 30 characters.';
+        }
+        if (formData.lastName.length < 3 || formData.lastName.length > 40) {
+            return 'Last name must be between 3 and 40 characters.';
+        }
+        if (formData.username.length < 3 || formData.username.length > 20) {
+            return 'Username must be between 3 and 20 characters.';
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email) || formData.email.length > 50) {
+            return 'Email must be a valid address and less than 50 characters.';
+        }
+        if (formData.password.length < 6 || formData.password.length > 40) {
+            return 'Password must be between 6 and 40 characters.';
+        }
+        if (formData.phoneNumber && (formData.phoneNumber.length < 6 || formData.phoneNumber.length > 20)) {
+            return 'Phone number must be between 6 and 20 characters.';
+        }
+        if (formData.farmName.length < 6 || formData.farmName.length > 45) {
+            return 'Farm name must be between 6 and 45 characters.';
+        }
+        if (formData.activationCode.length < 6 || formData.activationCode.length > 45) {
+            return 'Activation code must be between 6 and 45 characters.';
+        }
+        return null;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setResponseMessage('');  // Reset message before submission
         setErrorMessage('');
+
+        const validationError = validateForm();
+        if (validationError) {
+            setErrorMessage(validationError);
+            return;
+        }
 
         try {
             const response = await fetch('/api/auth/signupfarm', {
@@ -37,7 +74,8 @@ const SignupFarm = () => {
 
             if (response.ok) {
                 await response.json();
-                setResponseMessage('Registration successful!');  // Success feedback
+                setResponseMessage('Registration successful!');
+                navigate('/dashboard');
             } else {
                 const errorData = await response.json();
                 setErrorMessage(`Error: ${errorData.message || 'Failed to register'}`);
