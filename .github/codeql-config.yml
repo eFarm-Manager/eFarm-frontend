@@ -4,8 +4,8 @@ paths:
   - "**/*.jsx"
   - "**/*.ts"
   - "**/*.tsx"
-  
+
 exclude-paths:
-  - "node_modules/"
-  - "dist/"
-  - "build/"
+  - 'node_modules/**'
+  - '**/node_modules/**'
+  - '*/node_modules/**'
