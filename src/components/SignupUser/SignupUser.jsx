@@ -27,10 +27,43 @@ const SignupUser = () => {
         });
     };
 
+    const validateForm = () => {
+        if (formData.firstName.length < 3 || formData.firstName.length > 30) {
+            return 'First name must be between 3 and 30 characters.';
+        }
+        if (formData.lastName.length < 3 || formData.lastName.length > 40) {
+            return 'Last name must be between 3 and 40 characters.';
+        }
+        if (formData.username.length < 3 || formData.username.length > 20) {
+            return 'Username must be between 3 and 20 characters.';
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email) || formData.email.length > 50) {
+            return 'Email must be a valid address and less than 50 characters.';
+        }
+        if (formData.password.length < 6 || formData.password.length > 40) {
+            return 'Password must be between 6 and 40 characters.';
+        }
+        if (formData.phoneNumber && (formData.phoneNumber.length < 6 || formData.phoneNumber.length > 20)) {
+            return 'Phone number must be between 6 and 20 characters if provided.';
+        }
+        const validRoles = ['ROLE_FARM_MANAGER', 'ROLE_FARM_OPERATOR', 'ROLE_FARM_OWNER'];
+        if (!validRoles.includes(formData.role)) {
+            return 'Invalid role selected.';
+        }
+        return null;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setResponseMessage('');
         setErrorMessage('');
+
+        const validationError = validateForm();
+        if (validationError) {
+            setErrorMessage(validationError);
+            return;
+        }
 
         // Zakładamy, że token jest zapisany w localStorage (lub cookies)
         const token = localStorage.getItem('jwtToken');  // Pobierz JWT z localStorage
