@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: sprysio/efarm-frontend
   pullPolicy: IfNotPresent
-  tag: develop-ef8f3132964bcc190c2a3789ebf3b22cb605eb60
+  tag: develop-d3bdc0b1e49bbb6c650bb8062e86f5082b36d2bc
 
 service:
   type: LoadBalancer
