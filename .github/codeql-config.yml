@@ -1,9 +1,0 @@
-name: "JavaScript analysis"
-paths:
-  - "**/*.js"
-  - "**/*.jsx"
-  - "**/*.ts"
-  - "**/*.tsx"
-
-paths-ignore:
-  - 'node_modules'
