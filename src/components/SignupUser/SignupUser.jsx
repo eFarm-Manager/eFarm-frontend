@@ -47,7 +47,7 @@ const SignupUser = () => {
         if (formData.phoneNumber && (formData.phoneNumber.length < 6 || formData.phoneNumber.length > 20)) {
             return 'Phone number must be between 6 and 20 characters if provided.';
         }
-        const validRoles = ['ROLE_FARM_MANAGER', 'ROLE_FARM_OPERATOR', 'ROLE_FARM_OWNER'];
+        const validRoles = ['ROLE_FARM_MANAGER', 'ROLE_FARM_EQUIPMENT_OPERATOR', 'ROLE_FARM_OWNER'];
         if (!validRoles.includes(formData.role)) {
             return 'Invalid role selected.';
         }
