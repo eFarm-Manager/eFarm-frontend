@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+namespace: frontend
+
+images:
+  - name: sprysio/efarm-frontend
+    newTag: develop-7048d8ccb563eb8567a09357cd273ca51fab9805
