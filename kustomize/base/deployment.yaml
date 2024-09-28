@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: efarm-frontend
+  namespace: frontend
+  labels:
+    app: efarm-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: efarm-frontend
+  template:
+    metadata:
+      labels:
+        app: efarm-frontend
+    spec:
+      serviceAccountName: frontend-sa
+      containers:
+        - name: efarm-frontend
+          image: sprysio/efarm-frontend
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 60
+            periodSeconds: 60
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 60
+            periodSeconds: 60

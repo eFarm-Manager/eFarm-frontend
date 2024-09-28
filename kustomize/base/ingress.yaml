@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: efarm-frontend-ingress
+  namespace: frontend
+  annotations:
+    nginx.org/mergeable-ingress-type: "master"
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: efarm-frontend-svc
+                port:
+                  number: 80
