@@ -34,7 +34,7 @@ const SignupUser = () => {
         if (formData.lastName.length < 3 || formData.lastName.length > 40) {
             return 'Last name must be between 3 and 40 characters.';
         }
-        if (formData.username.length < 3 || formData.username.length > 20) {
+        if (formData.username.length < 3 || formData.username.length > 30) {
             return 'Username must be between 3 and 20 characters.';
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
