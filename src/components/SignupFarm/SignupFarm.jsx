@@ -54,7 +54,7 @@ const SignupFarm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setResponseMessage('');  // Reset message before submission
+        setResponseMessage('');
         setErrorMessage('');
 
         const validationError = validateForm();
