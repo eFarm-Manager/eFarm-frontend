@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SignIn = () => {
+const SignIn = ({ onLogin }) => {  // Dodajemy onLogin jako prop
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -15,6 +15,7 @@ const SignIn = () => {
             [e.target.name]: e.target.value
         });
     };
+
     const validateForm = () => {
         if (!formData.username.trim()) {
             return 'Username is required.';
@@ -48,6 +49,8 @@ const SignIn = () => {
                 const data = await response.json();
                 localStorage.setItem('jwtToken', data.token); // Zapisz token w localStorage
                 alert('Login successful!');
+
+                onLogin();  // Wywołaj funkcję onLogin po zalogowaniu
                 navigate('/dashboard');
             } else {
                 setErrorMessage('Invalid login credentials.');
@@ -61,8 +64,18 @@ const SignIn = () => {
         <div>
             <h2>Sign In</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="username" placeholder="Username" onChange={handleInputChange} />
-                <input type="password" name="password" placeholder="Password" onChange={handleInputChange} />
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleInputChange}
+                />
                 <button type="submit">Submit</button>
             </form>
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
