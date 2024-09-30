@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const SignIn = () => {
+const SignIn = ({ onLogin }) => {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
     });
     const [errorMessage, setErrorMessage] = useState('');
+    const [expireCodeInfo, setExpireCodeInfo] = useState('');
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -15,6 +17,7 @@ const SignIn = () => {
             [e.target.name]: e.target.value
         });
     };
+
     const validateForm = () => {
         if (!formData.username.trim()) {
             return 'Username is required.';
@@ -46,9 +49,26 @@ const SignIn = () => {
 
             if (response.ok) {
                 const data = await response.json();
+                if (data.expireCodeInfo) {
+                    setExpireCodeInfo(data.expireCodeInfo);
+                }
                 localStorage.setItem('jwtToken', data.token); // Zapisz token w localStorage
                 alert('Login successful!');
+
+                onLogin();  // Wywołaj funkcję onLogin po zalogowaniu
                 navigate('/dashboard');
+            } else if (response.status === 403) {
+                // Obsługa przekierowania do aktualizacji kodu aktywacyjnego dla ROLE_FARM_OWNER
+                const location = response.headers.get('location');
+                if (location) {
+                    navigate(`/update-activation-code?redirect=${encodeURIComponent(location)}`);
+                } else {
+                    setErrorMessage('Your farm has expired, and you need to update the activation code.');
+                }
+            } else if (response.status === 401) {
+                // Obsługa błędu 401 dla ROLE_FARM_MANAGER oraz ROLE_FARM_EQUIPMENT_OPERATOR
+                const data = await response.json();
+                setErrorMessage(data.message || 'Your farm has been blocked.');
             } else {
                 setErrorMessage('Invalid login credentials.');
             }
@@ -61,13 +81,28 @@ const SignIn = () => {
         <div>
             <h2>Sign In</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="username" placeholder="Username" onChange={handleInputChange} />
-                <input type="password" name="password" placeholder="Password" onChange={handleInputChange} />
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleInputChange}
+                />
                 <button type="submit">Submit</button>
             </form>
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {expireCodeInfo && <p style={{ color: 'orange' }}>{expireCodeInfo}</p>}
         </div>
     );
+};
+
+SignIn.propTypes = {
+    onLogin: PropTypes.func.isRequired,
 };
 
 export default SignIn;

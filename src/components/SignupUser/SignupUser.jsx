@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignupUser = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -35,7 +37,7 @@ const SignupUser = () => {
             return 'Last name must be between 3 and 40 characters.';
         }
         if (formData.username.length < 3 || formData.username.length > 30) {
-            return 'Username must be between 3 and 20 characters.';
+            return 'Username must be between 3 and 30 characters.';
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email) || formData.email.length > 50) {
@@ -65,15 +67,14 @@ const SignupUser = () => {
             return;
         }
 
-        // Zakładamy, że token jest zapisany w localStorage (lub cookies)
-        const token = localStorage.getItem('jwtToken');  // Pobierz JWT z localStorage
+        const token = localStorage.getItem('jwtToken');
 
         try {
             const response = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Wysłanie tokena w nagłówku
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(formData)
             });
@@ -81,6 +82,10 @@ const SignupUser = () => {
             if (response.ok) {
                 await response.json();
                 setResponseMessage('User registration successful!');
+
+                setTimeout(() => {
+                    navigate('/sign-in');
+                }, 2000);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(`Error: ${errorData.message || 'Failed to register'}`);
@@ -133,7 +138,7 @@ const SignupUser = () => {
                 <input
                     type="text"
                     name="phoneNumber"
-                    placeholder="Phone Number"
+                    placeholder="Phone Number (optional)"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
                 />

@@ -1,6 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
-const Dashboard = () => {
+const Dashboard = ({ onLogout }) => {
+    const [userRole, setUserRole] = useState('');
+
+    const getUserRoleFromToken = () => {
+        const token = localStorage.getItem('jwtToken');
+        if (token) {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.role;
+        }
+        return '';
+    };
+
+    useEffect(() => {
+        const role = getUserRoleFromToken();
+        setUserRole(role);
+    }, []);
+
     return (
         <div>
             <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#f8f8f8' }}>
@@ -22,10 +39,13 @@ const Dashboard = () => {
                     </Link>
                 </div>
                 <div>
-                    <Link to="/signup-user">
-                        <button>Zarejestruj Użytkownika</button>
-                    </Link>
+                    {(userRole === 'ROLE_FARM_MANAGER' || userRole === 'ROLE_FARM_OWNER') && (
+                        <Link to="/signup-user">
+                            <button>Zarejestruj Użytkownika</button>
+                        </Link>
+                    )}
                 </div>
+                <button onClick={onLogout}>Wyloguj</button>
             </nav>
 
             <div style={{ padding: '20px' }}>
@@ -33,6 +53,10 @@ const Dashboard = () => {
             </div>
         </div>
     );
+};
+
+Dashboard.propTypes = {
+    onLogout: PropTypes.func.isRequired,
 };
 
 export default Dashboard;
