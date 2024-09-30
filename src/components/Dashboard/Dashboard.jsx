@@ -1,4 +1,5 @@
 import { Link, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const Dashboard = ({ onLogout }) => {
     const [userRole, setUserRole] = useState('');
@@ -52,6 +53,10 @@ const Dashboard = ({ onLogout }) => {
             </div>
         </div>
     );
+};
+
+Dashboard.propTypes = {
+    onLogout: PropTypes.func.isRequired,
 };
 
 export default Dashboard;

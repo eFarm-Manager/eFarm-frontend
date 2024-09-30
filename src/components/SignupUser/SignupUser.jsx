@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignupUser = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -34,8 +36,8 @@ const SignupUser = () => {
         if (formData.lastName.length < 3 || formData.lastName.length > 40) {
             return 'Last name must be between 3 and 40 characters.';
         }
-        if (formData.username.length < 3 || formData.username.length > 20) {
-            return 'Username must be between 3 and 20 characters.';
+        if (formData.username.length < 3 || formData.username.length > 30) {
+            return 'Username must be between 3 and 30 characters.';
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email) || formData.email.length > 50) {
