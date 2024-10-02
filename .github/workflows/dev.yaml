@@ -41,6 +41,7 @@ jobs:
         with:
           image-ref: ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
           format: 'sarif'
+          ignorefile: '.trivyignore'
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
