@@ -6,7 +6,7 @@ import SignupFarm from './components/SignupFarm/SignupFarm';
 import SignIn from './components/SignIn/SignIn';
 import Dashboard from './components/Dashboard/Dashboard';
 import SignupUser from './components/SignupUser/SignupUser';
-import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
+//import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
 import './App.css';
 import { deleteCookie, getCookie, setCookie } from './components/helpers/cookieHelper';
 
