@@ -1,11 +1,12 @@
 import { Link, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { getCookie } from '../helpers/cookieHelper';
 
 const Dashboard = ({ onLogout }) => {
     const [userRole, setUserRole] = useState('');
 
     const getUserRoleFromToken = () => {
-        const token = localStorage.getItem('jwtToken');
+        const token = getCookie('jwtToken');
         if (token) {
             const payload = JSON.parse(atob(token.split('.')[1]));
             return payload.role;
@@ -14,9 +15,31 @@ const Dashboard = ({ onLogout }) => {
     };
 
     useEffect(() => {
-        const role = getUserRoleFromToken();
-        setUserRole(role);
+        const fetchUserRole = async () => {
+            const token = getCookie('jwtToken');
+            if (token) {
+                try {
+                    const response = await fetch('/api/user/role', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        setUserRole(data.role);
+                    } else {
+                        console.error('Failed to fetch user role.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        };
+
+        fetchUserRole();
     }, []);
+
 
     return (
         <div>

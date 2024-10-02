@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { setCookie } from '../helpers/cookieHelper';
 
 const SignIn = ({ onLogin }) => {
     const [formData, setFormData] = useState({
@@ -52,7 +53,7 @@ const SignIn = ({ onLogin }) => {
                 if (data.expireCodeInfo) {
                     setExpireCodeInfo(data.expireCodeInfo);
                 }
-                localStorage.setItem('jwtToken', data.token); // Zapisz token w localStorage
+                setCookie('jwtToken', data.token, 3); // Zapisz token w localStorage
                 alert('Login successful!');
 
                 onLogin();  // Wywołaj funkcję onLogin po zalogowaniu

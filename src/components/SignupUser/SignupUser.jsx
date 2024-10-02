@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getCookie } from '../helpers/cookieHelper';
 
 const SignupUser = () => {
     const navigate = useNavigate();
@@ -67,7 +68,12 @@ const SignupUser = () => {
             return;
         }
 
-        const token = localStorage.getItem('jwtToken');
+        const token = getCookie('jwtToken');
+
+        if (!token) {
+            setErrorMessage('You are not authorized.');
+            return;
+        }
 
         try {
             const response = await fetch('/api/auth/signup', {
@@ -84,7 +90,7 @@ const SignupUser = () => {
                 setResponseMessage('User registration successful!');
 
                 setTimeout(() => {
-                    navigate('/sign-in');
+                    navigate('/dashboard');
                 }, 2000);
             } else {
                 const errorData = await response.json();
@@ -94,6 +100,7 @@ const SignupUser = () => {
             setErrorMessage(`Error: ${error.message}`);
         }
     };
+
 
     return (
         <div>
