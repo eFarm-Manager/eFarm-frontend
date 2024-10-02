@@ -14,7 +14,7 @@ RUN npm run build
 
 FROM nginx:mainline-alpine
 
-RUN apk update && apk add --no-cache curl libcurl
+RUN apk update && apk del --no-cache curl libcurl
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
