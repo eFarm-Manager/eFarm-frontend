@@ -58,6 +58,7 @@ const SignIn = ({ onLogin }) => {
 
                 alert('Login successful!');
                 onLogin();  // No need to pass token
+                console.log('Navigating to /dashboard');
                 navigate('/dashboard');
             } else if (response.status === 403) {
                 // Obsługa przekierowania do aktualizacji kodu aktywacyjnego dla ROLE_FARM_OWNER

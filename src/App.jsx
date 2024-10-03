@@ -14,14 +14,18 @@ const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
+        console.log('Rendering Routes');
         const username = sessionStorage.getItem('username');
         const roles = sessionStorage.getItem('roles');
+        console.log('Checking', { username, roles });
         if (username && roles) {
             setIsAuthenticated(true);
+            console.log('Autoryzacja');
         }
     }, []);
 
     const handleLogin = () => {
+        console.log('isAuthenticated true');
         setIsAuthenticated(true);
     };
 
@@ -66,9 +70,11 @@ const App = () => {
                         path="/sign-in"
                         element={<SignIn onLogin={handleLogin} />}
                     />
+
                     <Route path="/signup-farm" element={<SignupFarm />} />
                     <Route path="/signup-user" element={<SignupUser />} />
                     {/*<Route path="/update-activation-code" element={<UpdateActivationCode />} /> */}
+
                 </Routes>
             </div>
         </Router>
