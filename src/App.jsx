@@ -25,7 +25,7 @@ const App = () => {
         }else{
             console.log('User is NOT authenticated'); // Dodaj log, jeśli dane nie są dostępne
         }
-    }, []);
+    }, [isAuthenticated]);
 
     const handleLogin = () => {
         console.log('isAuthenticated true');

@@ -58,10 +58,16 @@ const SignIn = ({ onLogin }) => {
 
                 console.log('Stored in sessionStorage:', { username: data.username, roles: data.roles }); // Dodaj log
 
+                const username = sessionStorage.getItem('username');
+                const roles = sessionStorage.getItem('roles');
+
                 alert('Login successful!');
-                onLogin();  // No need to pass token
-                console.log('Navigating to /dashboard');
-                navigate('/dashboard');
+                if (username && roles) {
+                    onLogin();  // Dopiero teraz aktualizujesz stan
+                    navigate('/dashboard');
+                } else {
+                    console.log('Problem with sessionStorage - data not found');
+                }
             } else if (response.status === 403) {
                 // Obsługa przekierowania do aktualizacji kodu aktywacyjnego dla ROLE_FARM_OWNER
                 const location = response.headers.get('location');
