@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { setCookie } from '../helpers/cookieHelper';
+//import { setCookie } from '../helpers/cookieHelper';
 
 const SignIn = ({ onLogin }) => {
     const [formData, setFormData] = useState({
@@ -53,10 +53,11 @@ const SignIn = ({ onLogin }) => {
                 if (data.expireCodeInfo) {
                     setExpireCodeInfo(data.expireCodeInfo);
                 }
-                setCookie('jwtToken', data.token, 3); // Zapisz token w localStorage
-                alert('Login successful!');
+                sessionStorage.setItem('username', data.username);
+                sessionStorage.setItem('roles', JSON.stringify(data.roles));
 
-                onLogin();  // Wywołaj funkcję onLogin po zalogowaniu
+                alert('Login successful!');
+                onLogin();  // No need to pass token
                 navigate('/dashboard');
             } else if (response.status === 403) {
                 // Obsługa przekierowania do aktualizacji kodu aktywacyjnego dla ROLE_FARM_OWNER
