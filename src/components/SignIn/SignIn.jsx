@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-//import { setCookie } from '../helpers/cookieHelper';
 
 const SignIn = ({ onLogin }) => {
     const [formData, setFormData] = useState({
@@ -56,20 +54,15 @@ const SignIn = ({ onLogin }) => {
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('roles', JSON.stringify(data.roles));
 
-                console.log('Stored in sessionStorage:', { username: data.username, roles: data.roles }); // Dodaj log
-
                 const username = sessionStorage.getItem('username');
                 const roles = sessionStorage.getItem('roles');
 
                 alert('Login successful!');
                 if (username && roles) {
-                    onLogin();  // Dopiero teraz aktualizujesz stan
+                    onLogin();
                     navigate('/dashboard');
-                } else {
-                    console.log('Problem with sessionStorage - data not found');
                 }
             } else if (response.status === 403) {
-                // Obsługa przekierowania do aktualizacji kodu aktywacyjnego dla ROLE_FARM_OWNER
                 const location = response.headers.get('location');
                 if (location) {
                     navigate(`/update-activation-code?redirect=${encodeURIComponent(location)}`);
@@ -77,7 +70,6 @@ const SignIn = ({ onLogin }) => {
                     setErrorMessage('Your farm has expired, and you need to update the activation code.');
                 }
             } else if (response.status === 401) {
-                // Obsługa błędu 401 dla ROLE_FARM_MANAGER oraz ROLE_FARM_EQUIPMENT_OPERATOR
                 const data = await response.json();
                 setErrorMessage(data.message || 'Your farm has been blocked.');
             } else {
