@@ -1,4 +1,3 @@
-// App.jsx
 import { useState,useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 
@@ -8,7 +7,6 @@ import Dashboard from './components/Dashboard/Dashboard';
 import SignupUser from './components/SignupUser/SignupUser';
 //import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
 import './App.css';
-//import { deleteCookie, getCookie, setCookie } from './components/helpers/cookieHelper';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,18 +15,14 @@ const App = () => {
         const username = sessionStorage.getItem('username');
         const roles = sessionStorage.getItem('roles');
 
-        console.log('useEffect - Checking sessionStorage:', { username, roles }); // Dodaj log
 
         if (username && roles) {
             setIsAuthenticated(true);
-            console.log('User is authenticated'); // Dodaj log
-        }else{
-            console.log('User is NOT authenticated'); // Dodaj log, jeśli dane nie są dostępne
         }
+
     }, [isAuthenticated]);
 
     const handleLogin = () => {
-        console.log('isAuthenticated true');
         setIsAuthenticated(true);
     };
 
@@ -37,7 +31,6 @@ const App = () => {
         setIsAuthenticated(false);
         sessionStorage.clear();
     };
-
 
     return (
         <Router>

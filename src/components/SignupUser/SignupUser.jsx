@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import { getCookie } from '../helpers/cookieHelper';
 
 const SignupUser = () => {
     const navigate = useNavigate();
@@ -88,7 +87,6 @@ const SignupUser = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // No need for Authorization header
                 },
                 body: JSON.stringify(formData)
             });
