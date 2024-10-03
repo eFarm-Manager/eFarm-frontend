@@ -27,7 +27,18 @@ const App = () => {
     };
 
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        try {
+            // Wywołanie API na backend, aby wylogować i wyczyścić cookies
+            const response = await fetch('/api/auth/signout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
         setIsAuthenticated(false);
         sessionStorage.clear();
     };
