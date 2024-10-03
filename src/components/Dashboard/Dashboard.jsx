@@ -7,6 +7,7 @@ const Dashboard = ({ onLogout }) => {
     const [username, setUsername] = useState(''); // Dodajemy stan do przechowywania nazwy użytkownika
 
     useEffect(() => {
+        console.log('Dashboard loaded');
         const storedRoles = sessionStorage.getItem('roles');
         const username = sessionStorage.getItem('username');
 
