@@ -112,8 +112,6 @@ const SignIn = ({ onLogin }) => {
     );
 };
 
-SignIn.propTypes = {
-    onLogin: PropTypes.func.isRequired,
-};
+
 
 export default SignIn;

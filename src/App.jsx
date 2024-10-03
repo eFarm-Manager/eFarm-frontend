@@ -78,7 +78,6 @@ const App = () => {
                     <Route path="/signup-farm" element={<SignupFarm />} />
                     <Route path="/signup-user" element={<SignupUser />} />
                     {/*<Route path="/update-activation-code" element={<UpdateActivationCode />} /> */}
-                    <Route path="/dashboard" element={<Dashboard onLogout={handleLogout} />} />
                 </Routes>
             </div>
         </Router>

@@ -1,4 +1,5 @@
-import { Link, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 //import { getCookie } from '../helpers/cookieHelper';
 
@@ -62,8 +63,6 @@ const Dashboard = ({ onLogout }) => {
     );
 };
 
-Dashboard.propTypes = {
-    onLogout: PropTypes.func.isRequired,
-};
+
 
 export default Dashboard;
