@@ -56,6 +56,8 @@ const SignIn = ({ onLogin }) => {
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('roles', JSON.stringify(data.roles));
 
+                console.log('Stored in sessionStorage:', { username: data.username, roles: data.roles }); // Dodaj log
+
                 alert('Login successful!');
                 onLogin();  // No need to pass token
                 console.log('Navigating to /dashboard');

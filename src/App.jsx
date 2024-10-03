@@ -14,13 +14,16 @@ const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        console.log('Rendering Routes');
         const username = sessionStorage.getItem('username');
         const roles = sessionStorage.getItem('roles');
-        console.log('Checking', { username, roles });
+
+        console.log('useEffect - Checking sessionStorage:', { username, roles }); // Dodaj log
+
         if (username && roles) {
             setIsAuthenticated(true);
-            console.log('Autoryzacja');
+            console.log('User is authenticated'); // Dodaj log
+        }else{
+            console.log('User is NOT authenticated'); // Dodaj log, jeśli dane nie są dostępne
         }
     }, []);
 
@@ -38,6 +41,7 @@ const App = () => {
 
     return (
         <Router>
+
             <div className="app-container">
                 {!isAuthenticated && (
                     <>
@@ -74,7 +78,7 @@ const App = () => {
                     <Route path="/signup-farm" element={<SignupFarm />} />
                     <Route path="/signup-user" element={<SignupUser />} />
                     {/*<Route path="/update-activation-code" element={<UpdateActivationCode />} /> */}
-
+                    <Route path="/dashboard" element={<Dashboard onLogout={handleLogout} />} />
                 </Routes>
             </div>
         </Router>
