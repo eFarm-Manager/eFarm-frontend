@@ -1,42 +1,27 @@
 import { Link, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { getCookie } from '../helpers/cookieHelper';
+//import { getCookie } from '../helpers/cookieHelper';
 
 const Dashboard = ({ onLogout }) => {
     const [userRole, setUserRole] = useState('');
     const [username, setUsername] = useState(''); // Dodajemy stan do przechowywania nazwy użytkownika
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const token = getCookie('jwtToken');
-            if (token) {
-                try {
-                    // Wydobycie nazwy użytkownika z tokena
-                    const payload = JSON.parse(atob(token.split('.')[1]));
-                    setUsername(payload.sub); // Zakładamy, że sub to nazwa użytkownika
+        const storedRoles = sessionStorage.getItem('roles');
+        const username = sessionStorage.getItem('username');
 
-                    // Sprawdzanie roli użytkownika na podstawie nazwy użytkownika
-                    const response = await fetch(`/api/user/role?username=${payload.sub}`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
+        setUsername(username);
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        setUserRole(data.role); // Zakładamy, że API zwraca obiekt z właściwością 'role'
-                    } else {
-                        console.error('Failed to fetch user role.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
+        if (storedRoles) {
+            const roles = JSON.parse(storedRoles);
+            if (roles.includes('ROLE_FARM_MANAGER') || roles.includes('ROLE_FARM_OWNER')) {
+                setUserRole('MANAGER_OR_OWNER');
+            } else {
+                setUserRole('OTHER_ROLE');
             }
-        };
-
-        fetchUserData();
+        }
     }, []);
+
 
     return (
         <div>
@@ -59,12 +44,12 @@ const Dashboard = ({ onLogout }) => {
                     </Link>
                 </div>
                 <div>
-                    {/* Sprawdzenie, czy użytkownik ma rolę ROLE_FARM_OWNER */}
-                    {(userRole === 'ROLE_FARM_MANAGER' || userRole === 'ROLE_FARM_OWNER') && (
+                    {(userRole === 'MANAGER_OR_OWNER') && (
                         <Link to="/signup-user">
                             <button>Zarejestruj Użytkownika</button>
                         </Link>
                     )}
+
                 </div>
                 <button onClick={onLogout}>Wyloguj</button>
             </nav>

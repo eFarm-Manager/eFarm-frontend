@@ -8,27 +8,29 @@ import Dashboard from './components/Dashboard/Dashboard';
 import SignupUser from './components/SignupUser/SignupUser';
 //import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
 import './App.css';
-import { deleteCookie, getCookie, setCookie } from './components/helpers/cookieHelper';
+//import { deleteCookie, getCookie, setCookie } from './components/helpers/cookieHelper';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        const token = getCookie('jwtToken');
-        if (token) {
+        const username = sessionStorage.getItem('username');
+        const roles = sessionStorage.getItem('roles');
+        if (username && roles) {
             setIsAuthenticated(true);
         }
     }, []);
 
-    const handleLogin = (token) => {
+    const handleLogin = () => {
         setIsAuthenticated(true);
-        setCookie('jwtToken', token); // Zapisz token do ciasteczek
     };
+
 
     const handleLogout = () => {
         setIsAuthenticated(false);
-        deleteCookie('jwtToken');
+        sessionStorage.clear();
     };
+
 
     return (
         <Router>
