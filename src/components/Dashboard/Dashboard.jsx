@@ -1,10 +1,10 @@
-import { Link, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
-//import { getCookie } from '../helpers/cookieHelper';
 
 const Dashboard = ({ onLogout }) => {
     const [userRole, setUserRole] = useState('');
-    const [username, setUsername] = useState(''); // Dodajemy stan do przechowywania nazwy użytkownika
+    const [username, setUsername] = useState('');
 
     useEffect(() => {
         const storedRoles = sessionStorage.getItem('roles');
