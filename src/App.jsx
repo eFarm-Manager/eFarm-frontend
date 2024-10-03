@@ -36,6 +36,11 @@ const App = () => {
                     'Content-Type': 'application/json'
                 }
             });
+            if (response.ok) {
+                console.log('Logged out from backend');
+            } else {
+                console.error('Failed to log out from backend');
+            }
         } catch (error) {
             console.error('Error logging out:', error);
         }
