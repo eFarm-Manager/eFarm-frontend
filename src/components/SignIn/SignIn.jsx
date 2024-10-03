@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const SignIn = ({ onLogin }) => {
     const [formData, setFormData] = useState({
@@ -104,6 +105,8 @@ const SignIn = ({ onLogin }) => {
     );
 };
 
-
+SignIn.propTypes = {
+    onLogin: PropTypes.func.isRequired,
+};
 
 export default SignIn;
