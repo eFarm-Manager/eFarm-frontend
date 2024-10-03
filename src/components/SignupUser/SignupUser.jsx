@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCookie } from '../helpers/cookieHelper';
+//import { getCookie } from '../helpers/cookieHelper';
 
 const SignupUser = () => {
     const navigate = useNavigate();
@@ -68,10 +68,18 @@ const SignupUser = () => {
             return;
         }
 
-        const token = getCookie('jwtToken');
+        const username = sessionStorage.getItem('username');
+        const storedRoles = sessionStorage.getItem('roles');
 
-        if (!token) {
+        if (!username || !storedRoles) {
             setErrorMessage('You are not authorized.');
+            return;
+        }
+
+        const roles = JSON.parse(storedRoles);
+
+        if (!roles.includes('ROLE_FARM_MANAGER') && !roles.includes('ROLE_FARM_OWNER')) {
+            setErrorMessage('You do not have permission to register a new user.');
             return;
         }
 
@@ -80,7 +88,7 @@ const SignupUser = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    // No need for Authorization header
                 },
                 body: JSON.stringify(formData)
             });
