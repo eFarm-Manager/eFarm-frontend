@@ -31,7 +31,7 @@ const SignupFarm = () => {
             return 'Last name must be between 3 and 40 characters.';
         }
         if (formData.username.length < 3 || formData.username.length > 30) {
-            return 'Username must be between 3 and 20 characters.';
+            return 'Username must be between 3 and 30 characters.';
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email) || formData.email.length > 50) {
@@ -54,7 +54,7 @@ const SignupFarm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setResponseMessage('');  // Reset message before submission
+        setResponseMessage('');
         setErrorMessage('');
 
         const validationError = validateForm();
