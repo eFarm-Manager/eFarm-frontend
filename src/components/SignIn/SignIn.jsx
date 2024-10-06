@@ -47,8 +47,9 @@ const SignIn = ({ onLogin }) => {
                 body: JSON.stringify(formData)
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                const data = await response.json();
 
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('roles', JSON.stringify(data.roles));

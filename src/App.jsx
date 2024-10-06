@@ -11,6 +11,7 @@ import './App.css';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userRoles, setUserRoles] = useState([]);
 
     useEffect(() => {
         const username = sessionStorage.getItem('username');
@@ -53,6 +54,9 @@ const App = () => {
         setIsAuthenticated(false);
         setUserRoles([]);
         sessionStorage.clear();
+    };
+    const hasRole = (role) => {
+        return userRoles.includes(role); // Correct use of userRoles
     };
 
     return (
