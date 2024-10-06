@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from "../Navbar/Navbar.jsx";
 import PropTypes from 'prop-types';
 
-const SignupUser = () => {
+const SignupUser = ({ onLogout }) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
