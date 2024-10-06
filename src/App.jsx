@@ -5,7 +5,8 @@ import SignupFarm from './components/SignupFarm/SignupFarm';
 import SignIn from './components/SignIn/SignIn';
 import Dashboard from './components/Dashboard/Dashboard';
 import SignupUser from './components/SignupUser/SignupUser';
-//import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
+import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
+import NotAuthorized from './components/NotAuthorized/NotAuthorized';
 import './App.css';
 
 const App = () => {
@@ -18,12 +19,17 @@ const App = () => {
 
         if (username && roles) {
             setIsAuthenticated(true);
+            setUserRoles(JSON.parse(roles));
         }
 
     }, [isAuthenticated]);
 
     const handleLogin = () => {
         setIsAuthenticated(true);
+        const roles = sessionStorage.getItem('roles');
+        if (roles) {
+            setUserRoles(JSON.parse(roles));
+        }
     };
 
 
@@ -45,6 +51,7 @@ const App = () => {
             console.error('Error logging out:', error);
         }
         setIsAuthenticated(false);
+        setUserRoles([]);
         sessionStorage.clear();
     };
 
@@ -84,9 +91,24 @@ const App = () => {
                         element={<SignIn onLogin={handleLogin} />}
                     />
 
+                    <Route
+                        path="/signup-user"
+                        element={
+                            isAuthenticated && hasRole('ROLE_FARM_OWNER') ? (
+                                <SignupUser onLogout={handleLogout} />
+                            ) : isAuthenticated ? (
+                                // User is authenticated but doesn't have the required role
+                                <Navigate to="/not-authorized" />
+                            ) : (
+                                // User is not authenticated
+                                <Navigate to="/sign-in" />
+                            )
+                        }
+                    />
+
                     <Route path="/signup-farm" element={<SignupFarm />} />
-                    <Route path="/signup-user" element={<SignupUser />} />
-                    {/*<Route path="/update-activation-code" element={<UpdateActivationCode />} /> */}
+                    <Route path="/update-activation-code" element={<UpdateActivationCode />} />
+                    <Route path="/not-authorized" element={<NotAuthorized />} />
                 </Routes>
             </div>
         </Router>
