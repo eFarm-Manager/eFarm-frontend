@@ -8,7 +8,7 @@ const SignIn = ({ onLogin }) => {
         password: ''
     });
     const [errorMessage, setErrorMessage] = useState('');
-    const [expireCodeInfo, setExpireCodeInfo] = useState('');
+    //const [expireCodeInfo, setExpireCodeInfo] = useState('');
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -47,34 +47,44 @@ const SignIn = ({ onLogin }) => {
                 body: JSON.stringify(formData)
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                const data = await response.json();
-                if (data.expireCodeInfo) {
-                    setExpireCodeInfo(data.expireCodeInfo);
-                }
+
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('roles', JSON.stringify(data.roles));
 
-                const username = sessionStorage.getItem('username');
-                const roles = sessionStorage.getItem('roles');
+                if (data.expireCodeInfo) {
+                    sessionStorage.setItem('expireCodeInfo', data.expireCodeInfo);
+                } else {
+                    sessionStorage.removeItem('expireCodeInfo');
+                }
 
-                alert('Login successful!');
-                if (username && roles) {
+                const roles = data.roles;
+                const locationHeader = response.headers.get('location');
+
+                if (locationHeader) {
+                    // Farm has expired
+                    if (roles.includes('ROLE_FARM_OWNER')) {
+                        // Redirect to UpdateActivationCode
+                        navigate('/update-activation-code');
+                    } else if (
+                        roles.includes('ROLE_FARM_MANAGER') ||
+                        roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
+                    ) {
+                        // Display error message
+                        setErrorMessage('Your farm has been blocked.');
+                        // Clear stored data
+                        sessionStorage.clear();
+                    }
+                } else {
+                    // Farm is active, proceed to dashboard
                     onLogin();
                     navigate('/dashboard');
                 }
-            } else if (response.status === 403) {
-                const location = response.headers.get('location');
-                if (location) {
-                    navigate(`/update-activation-code?redirect=${encodeURIComponent(location)}`);
-                } else {
-                    setErrorMessage('Your farm has expired, and you need to update the activation code.');
-                }
-            } else if (response.status === 401) {
-                const data = await response.json();
-                setErrorMessage(data.message || 'Your farm has been blocked.');
             } else {
-                setErrorMessage('Invalid login credentials.');
+                // Handle other non-OK responses (e.g., invalid credentials)
+                setErrorMessage(data.message || 'Invalid login credentials.');
             }
         } catch (error) {
             setErrorMessage(`Error: ${error.message}`);
@@ -100,7 +110,6 @@ const SignIn = ({ onLogin }) => {
                 <button type="submit">Submit</button>
             </form>
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            {expireCodeInfo && <p style={{ color: 'orange' }}>{expireCodeInfo}</p>}
         </div>
     );
 };

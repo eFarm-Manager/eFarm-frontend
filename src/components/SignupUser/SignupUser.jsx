@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from "../Navbar/Navbar.jsx";
+import PropTypes from 'prop-types';
 
-const SignupUser = () => {
+const SignupUser = ({ onLogout }) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
@@ -14,6 +16,19 @@ const SignupUser = () => {
     });
     const [responseMessage, setResponseMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [userRole, setUserRole] = useState('');
+
+    useEffect(() => {
+        const storedRoles = sessionStorage.getItem('roles');
+        if (storedRoles) {
+            const roles = JSON.parse(storedRoles);
+            if (roles.includes('ROLE_FARM_MANAGER') || roles.includes('ROLE_FARM_OWNER')) {
+                setUserRole('MANAGER_OR_OWNER');
+            } else {
+                setUserRole('OTHER_ROLE');
+            }
+        }
+    }, []);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -110,6 +125,7 @@ const SignupUser = () => {
 
     return (
         <div>
+            <Navbar onLogout={onLogout} userRole={userRole} />
             <h2>Register User</h2>
             <form onSubmit={handleSubmit}>
                 {/* Fields for user registration */}
@@ -167,5 +183,7 @@ const SignupUser = () => {
         </div>
     );
 };
-
+SignupUser.propTypes = {
+    onLogout: PropTypes.func.isRequired,
+};
 export default SignupUser;
