@@ -23,7 +23,7 @@ const App = () => {
             setUserRoles(JSON.parse(roles));
         }
 
-    }, [isAuthenticated]);
+    }, []);
 
     const handleLogin = () => {
         setIsAuthenticated(true);
@@ -98,7 +98,7 @@ const App = () => {
                     <Route
                         path="/signup-user"
                         element={
-                            isAuthenticated && hasRole('ROLE_FARM_OWNER') ? (
+                            isAuthenticated && (hasRole('ROLE_FARM_OWNER') || hasRole('ROLE_FARM_MANAGER')) ? (
                                 <SignupUser onLogout={handleLogout} />
                             ) : isAuthenticated ? (
                                 // User is authenticated but doesn't have the required role
