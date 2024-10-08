@@ -77,7 +77,6 @@ const SignIn = ({ onLogin }) => {
                     } else {
                         sessionStorage.removeItem('expireCodeInfo');
                     }
-
                     onLogin();
                     navigate('/dashboard');
                 }
