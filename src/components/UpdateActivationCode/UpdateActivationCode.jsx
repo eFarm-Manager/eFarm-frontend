@@ -64,10 +64,8 @@ const UpdateActivationCode = () => {
             if (response.ok) {
                 setSuccessMessage('Activation code updated successfully.');
 
-                // Clear expireCodeInfo from sessionStorage
                 sessionStorage.removeItem('expireCodeInfo');
 
-                // Do not navigate immediately; provide options
             } else {
                 const data = await response.json();
                 setErrorMessage(data.message || 'Failed to update activation code.');

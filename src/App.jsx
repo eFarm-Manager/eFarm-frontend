@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import SignupUser from './components/SignupUser/SignupUser';
 import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
 import NotAuthorized from './components/NotAuthorized/NotAuthorized';
+import FarmDetails from './components/FarmDetails/FarmDetails';
 import './App.css';
 
 const App = () => {
@@ -36,7 +37,6 @@ const App = () => {
 
     const handleLogout = async () => {
         try {
-            // Wywołanie API na backend, aby wylogować i wyczyścić cookies
             const response = await fetch('/api/auth/signout', {
                 method: 'POST',
                 headers: {
@@ -56,7 +56,7 @@ const App = () => {
         sessionStorage.clear();
     };
     const hasRole = (role) => {
-        return userRoles.includes(role); // Correct use of userRoles
+        return userRoles.includes(role);
     };
 
     return (
@@ -105,6 +105,16 @@ const App = () => {
                                 <Navigate to="/not-authorized" />
                             ) : (
                                 // User is not authenticated
+                                <Navigate to="/sign-in" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/farm-details"
+                        element={
+                            isAuthenticated ? (
+                                <FarmDetails onLogout={handleLogout} />
+                            ) : (
                                 <Navigate to="/sign-in" />
                             )
                         }

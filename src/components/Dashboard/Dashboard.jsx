@@ -40,7 +40,7 @@ const Dashboard = ({ onLogout }) => {
 
     return (
         <div>
-            <Navbar onLogout={onLogout} userRole={userRole} />
+            <Navbar onLogout={onLogout} userRole={userRole} username={username} />
             <div style={{ padding: '20px' }}>
                 <h2>Witaj w panelu zarządzania, {username}!</h2>
                 {expireCodeInfo && (
