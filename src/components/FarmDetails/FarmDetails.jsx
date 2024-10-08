@@ -268,7 +268,6 @@ const FarmDetails = ({ onLogout }) => {
         </div>
     );
 };
-
 FarmDetails.propTypes = {
     onLogout: PropTypes.func.isRequired,
 };
