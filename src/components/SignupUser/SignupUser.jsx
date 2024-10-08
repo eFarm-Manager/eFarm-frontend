@@ -17,9 +17,14 @@ const SignupUser = ({ onLogout }) => {
     const [responseMessage, setResponseMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [userRole, setUserRole] = useState('');
+    const [username, setUsername] = useState('');
 
     useEffect(() => {
         const storedRoles = sessionStorage.getItem('roles');
+        const username = sessionStorage.getItem('username');
+
+        setUsername(username);
+
         if (storedRoles) {
             const roles = JSON.parse(storedRoles);
             if (roles.includes('ROLE_FARM_MANAGER') || roles.includes('ROLE_FARM_OWNER')) {
@@ -125,7 +130,7 @@ const SignupUser = ({ onLogout }) => {
 
     return (
         <div>
-            <Navbar onLogout={onLogout} userRole={userRole} />
+            <Navbar onLogout={onLogout} userRole={userRole} username={username} />
             <h2>Register User</h2>
             <form onSubmit={handleSubmit}>
                 {/* Fields for user registration */}

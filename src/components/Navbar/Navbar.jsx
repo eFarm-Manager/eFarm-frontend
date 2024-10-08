@@ -28,6 +28,10 @@ const Navbar = ({ onLogout, userRole }) => {
                         <button>Zarejestruj Użytkownika</button>
                     </Link>
                 )}
+                <Link to="/farm-details" style={{ textDecoration: 'none', color: 'black' }}>
+                    <span style={{ cursor: 'pointer' }}>{username}</span>
+                </Link>
+                <button onClick={onLogout}>Wyloguj</button>
             </div>
             <button onClick={onLogout}>Wyloguj</button>
         </nav>
@@ -37,6 +41,7 @@ const Navbar = ({ onLogout, userRole }) => {
 Navbar.propTypes = {
     onLogout: PropTypes.func.isRequired,
     userRole: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
 };
 
 export default Navbar;
