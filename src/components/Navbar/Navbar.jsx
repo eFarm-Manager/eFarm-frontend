@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Navbar = ({ onLogout, userRole }) => {
+const Navbar = ({ onLogout, userRole, username }) => {
     return (
         <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#f8f8f8' }}>
             <div style={{ display: 'flex', gap: '10px' }}>
