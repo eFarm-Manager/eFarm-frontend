@@ -259,6 +259,7 @@ const FarmDetails = ({ onLogout }) => {
                             {userRole === 'MANAGER_OR_OWNER' && (
                                 <button onClick={toggleEditMode}>Edit Farm Details</button>
                             )}
+                            <button onClick={() => navigate('/change-password')}>Zmień hasło</button>
                         </div>
                     )
                 ) : (

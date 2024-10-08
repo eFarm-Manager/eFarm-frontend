@@ -8,6 +8,7 @@ import SignupUser from './components/SignupUser/SignupUser';
 import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
 import NotAuthorized from './components/NotAuthorized/NotAuthorized';
 import FarmDetails from './components/FarmDetails/FarmDetails';
+import ChangePassword from './components/ChangePassword/ChangePassword';
 import './App.css';
 
 const App = () => {
@@ -114,6 +115,16 @@ const App = () => {
                         element={
                             isAuthenticated ? (
                                 <FarmDetails onLogout={handleLogout} />
+                            ) : (
+                                <Navigate to="/sign-in" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/change-password"
+                        element={
+                            isAuthenticated ? (
+                                <ChangePassword onLogout={handleLogout} />
                             ) : (
                                 <Navigate to="/sign-in" />
                             )
