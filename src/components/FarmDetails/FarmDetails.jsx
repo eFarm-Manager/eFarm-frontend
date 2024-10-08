@@ -43,7 +43,7 @@ const FarmDetails = ({ onLogout }) => {
             setUserRole('OTHER_ROLE');
         }
         fetchFarmDetails();
-    }, []);
+    }, [navigate]);
 
     const fetchFarmDetails = async () => {
         try {
