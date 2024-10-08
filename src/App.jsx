@@ -7,6 +7,8 @@ import Dashboard from './components/Dashboard/Dashboard';
 import SignupUser from './components/SignupUser/SignupUser';
 import UpdateActivationCode from './components/UpdateActivationCode/UpdateActivationCode';
 import NotAuthorized from './components/NotAuthorized/NotAuthorized';
+import FarmDetails from './components/FarmDetails/FarmDetails';
+import ChangePassword from './components/ChangePassword/ChangePassword';
 import './App.css';
 
 const App = () => {
@@ -23,7 +25,7 @@ const App = () => {
             setUserRoles(JSON.parse(roles));
         }
 
-    }, [isAuthenticated]);
+    }, []);
 
     const handleLogin = () => {
         setIsAuthenticated(true);
@@ -36,7 +38,6 @@ const App = () => {
 
     const handleLogout = async () => {
         try {
-            // Wywołanie API na backend, aby wylogować i wyczyścić cookies
             const response = await fetch('/api/auth/signout', {
                 method: 'POST',
                 headers: {
@@ -56,7 +57,7 @@ const App = () => {
         sessionStorage.clear();
     };
     const hasRole = (role) => {
-        return userRoles.includes(role); // Correct use of userRoles
+        return userRoles.includes(role);
     };
 
     return (
@@ -98,13 +99,33 @@ const App = () => {
                     <Route
                         path="/signup-user"
                         element={
-                            isAuthenticated && hasRole('ROLE_FARM_OWNER') ? (
+                            isAuthenticated && (hasRole('ROLE_FARM_OWNER') || hasRole('ROLE_FARM_MANAGER')) ? (
                                 <SignupUser onLogout={handleLogout} />
                             ) : isAuthenticated ? (
                                 // User is authenticated but doesn't have the required role
                                 <Navigate to="/not-authorized" />
                             ) : (
                                 // User is not authenticated
+                                <Navigate to="/sign-in" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/farm-details"
+                        element={
+                            isAuthenticated ? (
+                                <FarmDetails onLogout={handleLogout} />
+                            ) : (
+                                <Navigate to="/sign-in" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/change-password"
+                        element={
+                            isAuthenticated ? (
+                                <ChangePassword onLogout={handleLogout} />
+                            ) : (
                                 <Navigate to="/sign-in" />
                             )
                         }

@@ -54,36 +54,33 @@ const SignIn = ({ onLogin }) => {
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('roles', JSON.stringify(data.roles));
 
-                if (data.expireCodeInfo) {
-                    sessionStorage.setItem('expireCodeInfo', data.expireCodeInfo);
-                } else {
-                    sessionStorage.removeItem('expireCodeInfo');
-                }
 
-                const roles = data.roles;
-                const locationHeader = response.headers.get('location');
+                const locationHeader = response.headers.get('Location');
 
-                if (locationHeader) {
-                    // Farm has expired
+                if (response.status === 403 && locationHeader) {
+                    const roles = data.roles;
                     if (roles.includes('ROLE_FARM_OWNER')) {
-                        // Redirect to UpdateActivationCode
                         navigate('/update-activation-code');
                     } else if (
                         roles.includes('ROLE_FARM_MANAGER') ||
                         roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
                     ) {
-                        // Display error message
                         setErrorMessage('Your farm has been blocked.');
-                        // Clear stored data
                         sessionStorage.clear();
                     }
-                } else {
-                    // Farm is active, proceed to dashboard
+                } else if (response.ok) {
+                    sessionStorage.setItem('username', data.username);
+                    sessionStorage.setItem('roles', JSON.stringify(data.roles));
+
+                    if (data.expireCodeInfo) {
+                        sessionStorage.setItem('expireCodeInfo', data.expireCodeInfo);
+                    } else {
+                        sessionStorage.removeItem('expireCodeInfo');
+                    }
                     onLogin();
                     navigate('/dashboard');
                 }
             } else {
-                // Handle other non-OK responses (e.g., invalid credentials)
                 setErrorMessage(data.message || 'Invalid login credentials.');
             }
         } catch (error) {
