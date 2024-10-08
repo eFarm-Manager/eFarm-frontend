@@ -17,10 +17,6 @@ const UpdateActivationCode = () => {
         const roles = sessionStorage.getItem('roles');
         if (username && roles) {
             setIsLoggedIn(true);
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                username: username
-            }));
         }
     }, []);
 
@@ -37,13 +33,33 @@ const UpdateActivationCode = () => {
         setSuccessMessage('');
 
         try {
-            const response = await fetch('/api/auth/update-activation-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
+            let response;
+            if (isLoggedIn) {
+                response = await fetch('/api/auth/update-activation-code', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        password: formData.password,
+                        newActivationCode: formData.newActivationCode
+                    }),
+                    credentials: 'include'
+                });
+            } else {
+                response = await fetch('/api/auth/update-activation-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: formData.username,
+                        password: formData.password,
+                        newActivationCode: formData.newActivationCode
+                    })
+                });
+            }
+
 
             if (response.ok) {
                 setSuccessMessage('Activation code updated successfully.');
