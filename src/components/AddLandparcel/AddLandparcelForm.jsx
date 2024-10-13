@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export function ParcelForm({ parcelData, onChange }) {
   if (!parcelData) {
     return <p>Select a parcel to view its details.</p>;
@@ -103,3 +105,21 @@ export function ParcelForm({ parcelData, onChange }) {
     </form>
   );
 }
+
+ParcelForm.propTypes = {
+    parcelData: PropTypes.shape({
+        "Identyfikator działki": PropTypes.string,
+        landOwnershipStatus: PropTypes.string,
+        "Województwo": PropTypes.string,
+        "Powiat": PropTypes.string,
+        "Gmina": PropTypes.string,
+        "Obręb": PropTypes.string,
+        "Numer działki": PropTypes.string,
+        additionalInfo: PropTypes.shape({
+            longitude: PropTypes.number,
+            latitude: PropTypes.number,
+        }),
+        "Pole pow. w ewidencji gruntów (ha)": PropTypes.number,
+    }),
+    onChange: PropTypes.func.isRequired,
+};

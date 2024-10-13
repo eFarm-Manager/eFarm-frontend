@@ -11,7 +11,7 @@ import FarmDetails from './components/FarmDetails/FarmDetails';
 import ChangePassword from './components/ChangePassword/ChangePassword';
 import './App.css';
 import "leaflet/dist/leaflet.css";
-import AddLandparcel from './components/AddLandparcel/AddLandparcel';
+//import AddLandparcel from './components/AddLandparcel/AddLandparcel';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
