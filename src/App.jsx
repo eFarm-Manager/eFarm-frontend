@@ -9,11 +9,13 @@ import UpdateActivationCode from './components/UpdateActivationCode/UpdateActiva
 import NotAuthorized from './components/NotAuthorized/NotAuthorized';
 import FarmDetails from './components/FarmDetails/FarmDetails';
 import ChangePassword from './components/ChangePassword/ChangePassword';
+import NewActivationCode from './components/NewActivationCode/NewActivationCode';
 import './App.css';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRoles, setUserRoles] = useState([]);
+    const [expireCodeInfo, setExpireCodeInfo] = useState(null);
 
     useEffect(() => {
         const username = sessionStorage.getItem('username');
@@ -33,6 +35,7 @@ const App = () => {
         if (roles) {
             setUserRoles(JSON.parse(roles));
         }
+        setExpireCodeInfo(expireCodeInfoFromLogin);
     };
 
 
@@ -54,6 +57,7 @@ const App = () => {
         }
         setIsAuthenticated(false);
         setUserRoles([]);
+        setExpireCodeInfo(null);
         sessionStorage.clear();
     };
     const hasRole = (role) => {
@@ -84,7 +88,7 @@ const App = () => {
                         path="/dashboard"
                         element={
                             isAuthenticated ? (
-                                <Dashboard onLogout={handleLogout} />
+                                <Dashboard onLogout={handleLogout} expireCodeInfo={expireCodeInfo}/>
                             ) : (
                                 <Navigate to="/sign-in" />
                             )
@@ -125,6 +129,16 @@ const App = () => {
                         element={
                             isAuthenticated ? (
                                 <ChangePassword onLogout={handleLogout} />
+                            ) : (
+                                <Navigate to="/sign-in" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/new-activation-code"
+                        element={
+                            isAuthenticated ? (
+                                <NewActivationCode onLogout={handleLogout} />
                             ) : (
                                 <Navigate to="/sign-in" />
                             )
