@@ -29,7 +29,7 @@ const App = () => {
 
     }, []);
 
-    const handleLogin = () => {
+    const handleLogin = (expireCodeInfoFromLogin) => {
         setIsAuthenticated(true);
         const roles = sessionStorage.getItem('roles');
         if (roles) {
