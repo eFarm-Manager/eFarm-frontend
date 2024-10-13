@@ -1,5 +1,5 @@
 // Obviously we need react and some goodies
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 // Here's our Mapbox imports
