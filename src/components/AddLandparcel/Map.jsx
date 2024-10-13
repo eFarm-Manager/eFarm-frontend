@@ -1,5 +1,6 @@
 // Obviously we need react and some goodies
 import React, { useEffect, useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 // Here's our Mapbox imports
 import L from 'leaflet';
@@ -72,4 +73,8 @@ export const MapComponent = ({ onMapClick }) => {
         };
     }, [lat, lng, zoom, onMapClick]);
   return <div ref={mapContainerRef} style={{ height: '750px', width: '120%' }} />;
+};
+
+MapComponent.propTypes = {
+    onMapClick: PropTypes.func.isRequired,
 };
