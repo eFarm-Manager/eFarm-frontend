@@ -49,42 +49,29 @@ const SignIn = ({ onLogin }) => {
 
             const data = await response.json();
 
-            if (response.ok) {
 
+            if (response.status === 403) {
+                const roles = data.roles || [];
+                if (roles.includes('ROLE_FARM_OWNER')) {
+                    navigate('/update-activation-code');
+                } else if (
+                    roles.includes('ROLE_FARM_MANAGER') ||
+                    roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
+                ) {
+                    setErrorMessage('Twoje gospodarstwo zostało zablokowane.');
+                    sessionStorage.clear();
+                }
+            } else if (response.ok) {
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('roles', JSON.stringify(data.roles));
 
-
-                const locationHeader = response.headers.get('Location');
-
-                if (response.status === 403 && locationHeader) {
-                    const roles = data.roles;
-                    if (roles.includes('ROLE_FARM_OWNER')) {
-                        navigate('/update-activation-code');
-                    } else if (
-                        roles.includes('ROLE_FARM_MANAGER') ||
-                        roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
-                    ) {
-                        setErrorMessage('Your farm has been blocked.');
-                        sessionStorage.clear();
-                    }
-                } else if (response.ok) {
-                    sessionStorage.setItem('username', data.username);
-                    sessionStorage.setItem('roles', JSON.stringify(data.roles));
-
-                    if (data.expireCodeInfo) {
-                        sessionStorage.setItem('expireCodeInfo', data.expireCodeInfo);
-                    } else {
-                        sessionStorage.removeItem('expireCodeInfo');
-                    }
-                    onLogin();
-                    navigate('/dashboard');
-                }
+                onLogin(data.expireCodeInfo || null);
+                navigate('/dashboard');
             } else {
-                setErrorMessage(data.message || 'Invalid login credentials.');
+            setErrorMessage(data.message || 'Invalid login credentials.');
             }
         } catch (error) {
-            setErrorMessage(`Error: ${error.message}`);
+        setErrorMessage(`Error: ${error.message}`);
         }
     };
 

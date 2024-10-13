@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 const UpdateActivationCode = () => {
@@ -9,16 +9,7 @@ const UpdateActivationCode = () => {
     });
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const username = sessionStorage.getItem('username');
-        const roles = sessionStorage.getItem('roles');
-        if (username && roles) {
-            setIsLoggedIn(true);
-        }
-    }, []);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -27,59 +18,50 @@ const UpdateActivationCode = () => {
         });
     };
 
+    const validateForm = () => {
+        if (!formData.username.trim()) {
+            return 'Nazwa użytkownika jest wymagana.';
+        }
+        if (!formData.password.trim()) {
+            return 'Hasło jest wymagane.';
+        }
+        if (!formData.newActivationCode.trim()) {
+            return 'Nowy kod aktywacyjny jest wymagany.';
+        }
+        return null;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage('');
         setSuccessMessage('');
 
-        try {
-            let response;
-            if (isLoggedIn) {
-                response = await fetch('/api/auth/update-activation-code', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        password: formData.password,
-                        newActivationCode: formData.newActivationCode
-                    }),
-                    credentials: 'include'
-                });
-            } else {
-                response = await fetch('/api/auth/update-activation-code', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: formData.username,
-                        password: formData.password,
-                        newActivationCode: formData.newActivationCode
-                    })
-                });
-            }
+        const validationError = validateForm();
+        if (validationError) {
+            setErrorMessage(validationError);
+            return;
+        }
 
+        try {
+            const response = await fetch('/api/auth/update-activation-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            });
 
             if (response.ok) {
-                setSuccessMessage('Activation code updated successfully.');
-
-                sessionStorage.removeItem('expireCodeInfo');
-
+                setSuccessMessage('Kod aktywacyjny został zaktualizowany pomyślnie.');
+                setTimeout(() => {
+                    navigate('/sign-in');
+                }, 2000);
             } else {
                 const data = await response.json();
-                setErrorMessage(data.message || 'Failed to update activation code.');
+                setErrorMessage(data.message || 'Nie udało się zaktualizować kodu aktywacyjnego.');
             }
         } catch (error) {
-            setErrorMessage(`Error: ${error.message}`);
-        }
-    };
-
-    const handleReturn = () => {
-        if (isLoggedIn) {
-            navigate('/dashboard');
-        } else {
-            navigate('/sign-in');
+            setErrorMessage(`Błąd: ${error.message}`);
         }
     };
 
@@ -96,8 +78,8 @@ const UpdateActivationCode = () => {
             ) : (
                 <div>
                     <p style={{ color: 'green' }}>{successMessage}</p>
-                    <button onClick={handleReturn}>
-                        {isLoggedIn ? 'Return to Dashboard' : 'Go to Sign In'}
+                    <button onClick={() => navigate('/sign-in')}>
+                        Przejdź do logowania
                     </button>
                 </div>
             )}
