@@ -3,16 +3,15 @@ import {useNavigate} from "react-router-dom";
 import PropTypes from 'prop-types';
 import Navbar from '../Navbar/Navbar';
 
-const Dashboard = ({ onLogout }) => {
+const Dashboard = ({ onLogout, expireCodeInfo }) => {
     const [userRole, setUserRole] = useState('');
     const [username, setUsername] = useState('');
-    const [expireCodeInfo, setExpireCodeInfo] = useState(null);
+    const [showExpireCodeInfo, setShowExpireCodeInfo] = useState(!!expireCodeInfo);
     const navigate = useNavigate();
 
     useEffect(() => {
         const storedRoles = sessionStorage.getItem('roles');
         const username = sessionStorage.getItem('username');
-        const expireCodeInfo = sessionStorage.getItem('expireCodeInfo');
 
         setUsername(username);
 
@@ -24,18 +23,14 @@ const Dashboard = ({ onLogout }) => {
                 setUserRole('OTHER_ROLE');
             }
         }
-        if (expireCodeInfo) {
-            setExpireCodeInfo(expireCodeInfo);
-        }
     }, []);
 
     const handleOk = () => {
-        setExpireCodeInfo(null);
-        sessionStorage.removeItem('expireCodeInfo');
+        setShowExpireCodeInfo(false);
     };
 
     const handleUpdate = () => {
-        navigate('/update-activation-code');
+        navigate('/new-activation-code');
     };
 
     return (
@@ -43,11 +38,11 @@ const Dashboard = ({ onLogout }) => {
             <Navbar onLogout={onLogout} userRole={userRole} username={username} />
             <div style={{ padding: '20px' }}>
                 <h2>Witaj w panelu zarządzania, {username}!</h2>
-                {expireCodeInfo && (
+                {showExpireCodeInfo && expireCodeInfo &&(
                     <div className="notification" style={{ border: '1px solid orange', padding: '10px', marginTop: '20px' }}>
                         <p>{expireCodeInfo}</p>
                         <button onClick={handleOk}>OK</button>
-                        <button onClick={handleUpdate}>Update</button>
+                        <button onClick={handleUpdate}>Aktualizuj</button>
                     </div>
                 )}
             </div>
@@ -57,6 +52,7 @@ const Dashboard = ({ onLogout }) => {
 
 Dashboard.propTypes = {
     onLogout: PropTypes.func.isRequired,
+    expireCodeInfo: PropTypes.string,
 };
 
 export default Dashboard;
