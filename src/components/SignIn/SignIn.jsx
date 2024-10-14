@@ -51,14 +51,14 @@ const SignIn = ({ onLogin }) => {
 
 
             if (response.status === 403) {
-                const roles = data.roles || [];
-                if (roles.includes('ROLE_FARM_OWNER')) {
+                const message = data.message || '';
+                if (message.includes('Gospodarstwo jest nieaktywne')) {
                     navigate('/update-activation-code');
-                } else if (
-                    roles.includes('ROLE_FARM_MANAGER') ||
-                    roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
-                ) {
-                    setErrorMessage('Twoje gospodarstwo zostało zablokowane.');
+                } else if (message.includes('Twoje gospodarstwo zostało zablokowane')) {
+                    setErrorMessage(message);
+                    sessionStorage.clear();
+                } else {
+                    setErrorMessage(message || 'Access denied.');
                     sessionStorage.clear();
                 }
             } else if (response.ok) {

@@ -12,7 +12,7 @@ import ChangePassword from './components/ChangePassword/ChangePassword';
 import NewActivationCode from './components/NewActivationCode/NewActivationCode';
 import './App.css';
 import "leaflet/dist/leaflet.css";
-import AddLandparcel from './components/AddLandparcel/AddLandparcel';
+//import AddLandparcel from './components/AddLandparcel/AddLandparcel';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,6 +40,9 @@ const App = () => {
         setExpireCodeInfo(expireCodeInfoFromLogin);
     };
 
+    const handleExpireCodeInfoUpdate = (newExpireCodeInfo) => {
+        setExpireCodeInfo(newExpireCodeInfo);
+    };
 
     const handleLogout = async () => {
         try {
@@ -140,7 +143,7 @@ const App = () => {
                         path="/new-activation-code"
                         element={
                             isAuthenticated ? (
-                                <NewActivationCode onLogout={handleLogout} />
+                                <NewActivationCode onLogout={handleLogout} onExpireCodeInfoUpdate={handleExpireCodeInfoUpdate} />
                             ) : (
                                 <Navigate to="/sign-in" />
                             )
