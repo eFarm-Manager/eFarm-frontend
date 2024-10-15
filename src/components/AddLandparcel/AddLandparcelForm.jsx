@@ -105,7 +105,6 @@ export function ParcelForm({ parcelData, onChange }) {
     </form>
   );
 }
-
 ParcelForm.propTypes = {
     parcelData: PropTypes.shape({
         "Identyfikator działki": PropTypes.string,
