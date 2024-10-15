@@ -40,6 +40,9 @@ const App = () => {
         setExpireCodeInfo(expireCodeInfoFromLogin);
     };
 
+    const handleExpireCodeInfoUpdate = (newExpireCodeInfo) => {
+        setExpireCodeInfo(newExpireCodeInfo);
+    };
 
     const handleLogout = async () => {
         try {
@@ -140,7 +143,7 @@ const App = () => {
                         path="/new-activation-code"
                         element={
                             isAuthenticated ? (
-                                <NewActivationCode onLogout={handleLogout} />
+                                <NewActivationCode onLogout={handleLogout} onExpireCodeInfoUpdate={handleExpireCodeInfoUpdate} />
                             ) : (
                                 <Navigate to="/sign-in" />
                             )

@@ -1,10 +1,9 @@
-// NewActivationCode.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import PropTypes from 'prop-types';
 
-const NewActivationCode = ({ onLogout }) => {
+const NewActivationCode = ({ onLogout, onExpireCodeInfoUpdate }) => {
     const [formData, setFormData] = useState({
         password: '',
         newActivationCode: '',
@@ -79,7 +78,7 @@ const NewActivationCode = ({ onLogout }) => {
 
             if (response.ok) {
                 setSuccessMessage('Activation code updated successfully.');
-                // Optionally, redirect to dashboard after a delay
+                onExpireCodeInfoUpdate(null);
                 setTimeout(() => {
                     navigate('/dashboard');
                 }, 2000);
@@ -127,6 +126,7 @@ const NewActivationCode = ({ onLogout }) => {
 
 NewActivationCode.propTypes = {
     onLogout: PropTypes.func.isRequired,
+    onExpireCodeInfoUpdate: PropTypes.func.isRequired,
 };
 
 export default NewActivationCode;
