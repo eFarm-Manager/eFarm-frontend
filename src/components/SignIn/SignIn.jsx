@@ -52,9 +52,12 @@ const SignIn = ({ onLogin }) => {
 
             if (response.status === 403) {
                 const message = data.message || '';
-                if (message.includes('Gospodarstwo jest nieaktywne')) {
-                    navigate('/update-activation-code');
-                } else if (message.includes('Twoje gospodarstwo zostało zablokowane')) {
+                if (message.includes('Gospodarstwo jest nieaktywne. Podaj nowy kod aktywacyjny.')) {
+                    setErrorMessage(message);
+                    setTimeout(() => {
+                        navigate('/update-activation-code');
+                    }, 1000);
+                } else if (message.includes('Gospodarstwo jest nieaktywne. Kod aktywacyjny wygasł.')) {
                     setErrorMessage(message);
                     sessionStorage.clear();
                 } else {
