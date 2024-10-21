@@ -17,7 +17,7 @@ const Navbar = ({ onLogout, userRole, username }) => {
                 <Link to="#">
                     <button>Zabiegi</button>
                 </Link>
-                <Link to="/equipment-list">
+                <Link to="/equipment">
                     <button>Sprzęt</button>
                 </Link>
                 <Link to="#">
