@@ -56,7 +56,7 @@ const SignIn = ({ onLogin }) => {
                     setErrorMessage(message);
                     setTimeout(() => {
                         navigate('/update-activation-code');
-                    }, 1000);
+                    }, 2000);
                 } else if (message.includes('Gospodarstwo jest nieaktywne. Kod aktywacyjny wygasł.')) {
                     setErrorMessage(message);
                     sessionStorage.clear();
