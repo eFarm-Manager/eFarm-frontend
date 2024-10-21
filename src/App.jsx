@@ -12,6 +12,9 @@ import ChangePassword from './components/ChangePassword/ChangePassword';
 import NewActivationCode from './components/NewActivationCode/NewActivationCode';
 import './App.css';
 import "leaflet/dist/leaflet.css";
+//import Navbar from "./components/Navbar/Navbar.jsx";
+import EquipmentList from './components/Equipment/EquipmentList';
+import EquipmentDetail from './components/Equipment/EquipmentDetail';
 //import AddLandparcel from './components/AddLandparcel/AddLandparcel';
 
 const App = () => {
@@ -122,8 +125,10 @@ const App = () => {
                     <Route
                         path="/farm-details"
                         element={
-                            isAuthenticated ? (
+                            isAuthenticated && (hasRole('ROLE_FARM_OWNER') || hasRole('ROLE_FARM_MANAGER')) ? (
                                 <FarmDetails onLogout={handleLogout} />
+                            ) : isAuthenticated ? (
+                                <Navigate to="/not-authorized" />
                             ) : (
                                 <Navigate to="/sign-in" />
                             )
@@ -142,8 +147,30 @@ const App = () => {
                     <Route
                         path="/new-activation-code"
                         element={
-                            isAuthenticated ? (
+                            isAuthenticated && hasRole('ROLE_FARM_OWNER') ? (
                                 <NewActivationCode onLogout={handleLogout} onExpireCodeInfoUpdate={handleExpireCodeInfoUpdate} />
+                            ) : isAuthenticated ? (
+                                <Navigate to="/not-authorized" />
+                            ) : (
+                                <Navigate to="/sign-in" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/equipment"
+                        element={
+                            isAuthenticated ? (
+                                <EquipmentList onLogout={handleLogout} />
+                            ) : (
+                                <Navigate to="/sign-in" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/equipment/:id"
+                        element={
+                            isAuthenticated ? (
+                                <EquipmentDetail onLogout={handleLogout} />
                             ) : (
                                 <Navigate to="/sign-in" />
                             )

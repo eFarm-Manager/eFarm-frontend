@@ -37,8 +37,10 @@ const FarmDetails = ({ onLogout }) => {
 
         const roles = JSON.parse(storedRoles);
 
-        if (roles.includes('ROLE_FARM_MANAGER') || roles.includes('ROLE_FARM_OWNER')) {
-            setUserRole('MANAGER_OR_OWNER');
+        if (roles.includes('ROLE_FARM_OWNER')) {
+            setUserRole('OWNER');
+        } else if (roles.includes('ROLE_FARM_MANAGER')) {
+            setUserRole('MANAGER');
         } else {
             setUserRole('OTHER_ROLE');
         }
@@ -251,15 +253,14 @@ const FarmDetails = ({ onLogout }) => {
                             <p>
                                 <strong>City:</strong> {farmData.city}
                             </p>
-                            {userRole === 'MANAGER_OR_OWNER' && farmData.expireCodeDate && (
+                            {userRole === 'OWNER' && farmData.expireCodeDate && (
                                 <p>
                                     <strong>Activation Code Expires On:</strong> {farmData.expireCodeDate}
                                 </p>
                             )}
-                            {userRole === 'MANAGER_OR_OWNER' && (
+                            {(userRole === 'OWNER' || userRole === 'MANAGER') && (
                                 <button onClick={toggleEditMode}>Edit Farm Details</button>
                             )}
-                            {/*<button onClick={() => navigate('/change-password')}>Zmień hasło</button>*/}
                         </div>
                     )
                 ) : (
