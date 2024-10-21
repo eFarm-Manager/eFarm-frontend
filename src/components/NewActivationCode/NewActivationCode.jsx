@@ -21,7 +21,6 @@ const NewActivationCode = ({ onLogout, onExpireCodeInfoUpdate }) => {
         setUsername(username);
 
         if (!username || !storedRoles) {
-            // If not authenticated, redirect to sign-in
             navigate('/sign-in');
             return;
         }
@@ -69,7 +68,7 @@ const NewActivationCode = ({ onLogout, onExpireCodeInfoUpdate }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // Include cookies if using sessions
+                credentials: 'include',
                 body: JSON.stringify({
                     password: formData.password,
                     newActivationCode: formData.newActivationCode,
