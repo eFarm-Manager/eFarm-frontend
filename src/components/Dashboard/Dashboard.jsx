@@ -1,11 +1,11 @@
-import { useEffect, useState, useContext } from 'react';
+import {useEffect, useContext, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import PropTypes from 'prop-types';
 import Navbar from '../Navbar/Navbar';
 import { AuthContext } from '../../AuthContext.jsx';
 
 const Dashboard = () => {
     const { isAuthenticated, userRoles, expireCodeInfo, handleLogout, username, } = useContext(AuthContext);
+    const [showExpireCodeInfo, setShowExpireCodeInfo] = useState(!!expireCodeInfo);
 
     const navigate = useNavigate();
 
@@ -14,7 +14,6 @@ const Dashboard = () => {
 
         if (!username || !isAuthenticated) {
             navigate('/sign-in');
-            return;
         }
     }, [navigate, isAuthenticated, userRoles]);
 
@@ -26,7 +25,13 @@ const Dashboard = () => {
                 ? 'OPERATOR'
                 : 'OTHER_ROLE';
 
-    const showExpireCodeInfo = expireCodeInfo !== null && expireCodeInfo !== undefined;
+    const handleOk = () => {
+        setShowExpireCodeInfo(false);
+    };
+
+    const handleUpdate = () => {
+        navigate('/new-activation-code');
+    };
     return (
         <div>
             <Navbar userRole={userRole} username={username} onLogout={handleLogout} />

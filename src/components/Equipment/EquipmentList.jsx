@@ -7,7 +7,7 @@ const EquipmentList = () => {
     const [equipmentList, setEquipmentList] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [userRole, setUserRole] = useState('');
-    const { handleLogout, userRoles, username, isAuthenticated } = useContext(AuthContext);
+    const { userRoles, username, isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {

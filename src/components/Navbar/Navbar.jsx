@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import {useContext, useState} from 'react';
+import PropTypes from 'prop-types';
 import { AuthContext } from '../../AuthContext.jsx';
+
 
 const Navbar = ({ userRole, username }) => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -70,5 +72,8 @@ const Navbar = ({ userRole, username }) => {
         </nav>
     );
 };
-
+Navbar.propTypes = {
+    userRole: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+};
 export default Navbar;

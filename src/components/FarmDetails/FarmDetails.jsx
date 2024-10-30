@@ -20,7 +20,7 @@ const FarmDetails = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [userRole, setUserRole] = useState('');
-    const { handleLogout, userRoles, username, isAuthenticated } = useContext(AuthContext);
+    const { userRoles, username, isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
 

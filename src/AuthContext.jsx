@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 export const AuthContext = createContext();
 
@@ -11,10 +12,14 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const username = sessionStorage.getItem('username');
         const roles = sessionStorage.getItem('roles');
+        const storedExpireCodeInfo = sessionStorage.getItem('expireCodeInfo');
         if (username && roles) {
             setIsAuthenticated(true);
             setUserRoles(JSON.parse(roles));
             setUsername(username);
+            if (storedExpireCodeInfo) {
+                setExpireCodeInfo(storedExpireCodeInfo);
+            }
         }
     }, []);
 
@@ -28,11 +33,15 @@ export const AuthProvider = ({ children }) => {
         if (username) {
             setUsername(username);
         }
-        setExpireCodeInfo(expireCodeInfoFromLogin);
+        if (expireCodeInfoFromLogin) {
+            setExpireCodeInfo(expireCodeInfoFromLogin);
+            sessionStorage.setItem('expireCodeInfo', expireCodeInfoFromLogin);
+        }
     };
 
     const handleExpireCodeInfoUpdate = (newExpireCodeInfo) => {
         setExpireCodeInfo(newExpireCodeInfo);
+        sessionStorage.setItem('expireCodeInfo', newExpireCodeInfo);
     };
 
     const handleLogout = async () => {
@@ -83,4 +92,8 @@ export const AuthProvider = ({ children }) => {
             {children}
         </AuthContext.Provider>
     );
+
+};
+AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };

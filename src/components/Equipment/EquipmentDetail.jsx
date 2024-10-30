@@ -7,7 +7,7 @@ const EquipmentDetail = () => {
     const { id } = useParams();
     const [equipmentData, setEquipmentData] = useState(null);
     const [userRole, setUserRole] = useState('');
-    const { handleLogout, userRoles, username, isAuthenticated } = useContext(AuthContext);
+    const { userRoles, username, isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
 
@@ -28,29 +28,31 @@ const EquipmentDetail = () => {
             setUserRole('OTHER_ROLE');
         }
 
-        fetchEquipmentDetail();
-    }, [navigate, isAuthenticated, userRoles]);
+        const fetchEquipmentDetail = async () => {
+            try {
+                const response = await fetch(`/api/equipment/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                });
 
-    const fetchEquipmentDetail = async () => {
-        try {
-            const response = await fetch(`/api/equipment/${id}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setEquipmentData(data);
-            } else {
-                console.error('Failed to fetch equipment details');
+                if (response.ok) {
+                    const data = await response.json();
+                    setEquipmentData(data);
+                } else {
+                    console.error('Failed to fetch equipment details');
+                }
+            } catch (error) {
+                console.error('Error fetching equipment details:', error);
             }
-        } catch (error) {
-            console.error('Error fetching equipment details:', error);
-        }
-    };
+        };
+
+        fetchEquipmentDetail();
+    }, [navigate, id]);
+
+
 
     if (!equipmentData) {
         return (

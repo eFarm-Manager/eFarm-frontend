@@ -6,6 +6,9 @@ import { AuthContext } from '../../AuthContext.jsx';
 const SignupUser = () => {
     const { isAuthenticated, hasAnyRole, handleLogout, userRoles, username } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [userRole, setUserRole] = useState('');
+    const [responseMessage, setResponseMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { AuthContext } from '../../AuthContext.jsx';
 
-const NewActivationCode = (x) => {
+const NewActivationCode = () => {
     const [formData, setFormData] = useState({
         password: '',
         newActivationCode: '',
@@ -11,7 +11,13 @@ const NewActivationCode = (x) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [userRole, setUserRole] = useState('');
-    const { handleLogout, userRoles, username, isAuthenticated, handleExpireCodeInfoUpdate } = useContext(AuthContext);
+    const {
+        isAuthenticated,
+        userRoles,
+        username,
+        handleLogout,
+        handleExpireCodeInfoUpdate,
+    } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -71,7 +77,7 @@ const NewActivationCode = (x) => {
 
             if (response.ok) {
                 setSuccessMessage('Activation code updated successfully.');
-                onExpireCodeInfoUpdate(null);
+                handleExpireCodeInfoUpdate(data.newExpireCodeInfo);
                 setTimeout(() => {
                     navigate('/dashboard');
                 }, 2000);
@@ -86,7 +92,7 @@ const NewActivationCode = (x) => {
 
     return (
         <div>
-            <Navbar userRole={userRole} username={username} />
+            <Navbar onLogout={handleLogout} userRole={userRole} username={username} />
             <div style={{ padding: '20px' }}>
                 <h2>New Activation Code</h2>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}

@@ -9,10 +9,11 @@ const ChangePassword = () => {
         newPassword: '',
         confirmNewPassword: '',
     });
+    const { isAuthenticated, userRoles, username } = useContext(AuthContext);
+
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [userRole, setUserRole] = useState('');
-    const [username, setUsername] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,6 +21,7 @@ const ChangePassword = () => {
             navigate('/sign-in');
             return;
         }
+
         if (userRoles.includes('ROLE_FARM_OWNER')) {
             setUserRole('OWNER');
         } else if (userRoles.includes('ROLE_FARM_MANAGER')) {
