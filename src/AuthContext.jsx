@@ -13,12 +13,15 @@ export const AuthProvider = ({ children }) => {
         const username = sessionStorage.getItem('username');
         const roles = sessionStorage.getItem('roles');
         const storedExpireCodeInfo = sessionStorage.getItem('expireCodeInfo');
+
         if (username && roles) {
             setIsAuthenticated(true);
             setUserRoles(JSON.parse(roles));
             setUsername(username);
             if (storedExpireCodeInfo) {
                 setExpireCodeInfo(storedExpireCodeInfo);
+            } else {
+                setExpireCodeInfo(null);
             }
         }
     }, []);
@@ -35,7 +38,8 @@ export const AuthProvider = ({ children }) => {
         }
         if (expireCodeInfoFromLogin) {
             setExpireCodeInfo(expireCodeInfoFromLogin);
-            sessionStorage.setItem('expireCodeInfo', expireCodeInfoFromLogin);
+        } else {
+            setExpireCodeInfo(null);
         }
     };
 

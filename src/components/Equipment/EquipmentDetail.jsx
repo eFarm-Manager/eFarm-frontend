@@ -50,7 +50,7 @@ const EquipmentDetail = () => {
         };
 
         fetchEquipmentDetail();
-    }, [navigate, id]);
+    }, [isAuthenticated, userRoles, navigate, id]);
 
 
 

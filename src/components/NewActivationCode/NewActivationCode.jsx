@@ -76,8 +76,9 @@ const NewActivationCode = () => {
             });
 
             if (response.ok) {
+                //const data = await response.json();
                 setSuccessMessage('Activation code updated successfully.');
-                handleExpireCodeInfoUpdate(data.newExpireCodeInfo);
+                handleExpireCodeInfoUpdate(null);
                 setTimeout(() => {
                     navigate('/dashboard');
                 }, 2000);

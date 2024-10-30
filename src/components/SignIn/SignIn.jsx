@@ -67,7 +67,9 @@ const SignIn = () => {
             } else if (response.ok) {
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('roles', JSON.stringify(data.roles));
-                handleLogin(data.expireCodeInfo || null);
+                const expireCodeInfo = data.expireCodeInfo || null;
+                sessionStorage.setItem('expireCodeInfo', expireCodeInfo);
+                handleLogin(expireCodeInfo);
                 navigate('/dashboard');
             } else {
             setErrorMessage(data.message || 'Invalid login credentials.');
