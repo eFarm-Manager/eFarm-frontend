@@ -1,41 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {useNavigate} from "react-router-dom";
 import PropTypes from 'prop-types';
 import Navbar from '../Navbar/Navbar';
+import { AuthContext } from '../../AuthContext.jsx';
 
-const Dashboard = ({ onLogout, expireCodeInfo }) => {
-    const [userRole, setUserRole] = useState('');
-    const [username, setUsername] = useState('');
-    const [showExpireCodeInfo, setShowExpireCodeInfo] = useState(!!expireCodeInfo);
+const Dashboard = () => {
+    const { isAuthenticated, userRoles, expireCodeInfo, handleLogout, username, } = useContext(AuthContext);
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedRoles = sessionStorage.getItem('roles');
         const username = sessionStorage.getItem('username');
 
-        setUsername(username);
-
-        if (storedRoles) {
-            const roles = JSON.parse(storedRoles);
-            if (roles.includes('ROLE_FARM_MANAGER') || roles.includes('ROLE_FARM_OWNER')) {
-                setUserRole('MANAGER_OR_OWNER');
-            } else {
-                setUserRole('OTHER_ROLE');
-            }
+        if (!username || !isAuthenticated) {
+            navigate('/sign-in');
+            return;
         }
-    }, []);
+    }, [navigate, isAuthenticated, userRoles]);
 
-    const handleOk = () => {
-        setShowExpireCodeInfo(false);
-    };
+    const userRole = userRoles.includes('ROLE_FARM_OWNER')
+        ? 'OWNER'
+        : userRoles.includes('ROLE_FARM_MANAGER')
+            ? 'MANAGER'
+            : userRoles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
+                ? 'OPERATOR'
+                : 'OTHER_ROLE';
 
-    const handleUpdate = () => {
-        navigate('/new-activation-code');
-    };
-
+    const showExpireCodeInfo = expireCodeInfo !== null && expireCodeInfo !== undefined;
     return (
         <div>
-            <Navbar onLogout={onLogout} userRole={userRole} username={username} />
+            <Navbar userRole={userRole} username={username} onLogout={handleLogout} />
             <div style={{ padding: '20px' }}>
                 <h2>Witaj w panelu zarządzania, {username}!</h2>
                 {showExpireCodeInfo && expireCodeInfo &&(
@@ -48,11 +42,6 @@ const Dashboard = ({ onLogout, expireCodeInfo }) => {
             </div>
         </div>
     );
-};
-
-Dashboard.propTypes = {
-    onLogout: PropTypes.func.isRequired,
-    expireCodeInfo: PropTypes.string,
 };
 
 export default Dashboard;

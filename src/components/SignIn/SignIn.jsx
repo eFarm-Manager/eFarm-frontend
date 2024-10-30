@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import {useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { AuthContext } from '../../AuthContext.jsx';
 
-const SignIn = ({ onLogin }) => {
+const SignIn = () => {
+    const { handleLogin } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         username: '',
         password: ''
     });
     const [errorMessage, setErrorMessage] = useState('');
-    //const [expireCodeInfo, setExpireCodeInfo] = useState('');
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -67,8 +67,7 @@ const SignIn = ({ onLogin }) => {
             } else if (response.ok) {
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('roles', JSON.stringify(data.roles));
-
-                onLogin(data.expireCodeInfo || null);
+                handleLogin(data.expireCodeInfo || null);
                 navigate('/dashboard');
             } else {
             setErrorMessage(data.message || 'Invalid login credentials.');
@@ -99,10 +98,6 @@ const SignIn = ({ onLogin }) => {
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
     );
-};
-
-SignIn.propTypes = {
-    onLogin: PropTypes.func.isRequired,
 };
 
 export default SignIn;

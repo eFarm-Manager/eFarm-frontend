@@ -1,9 +1,10 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../Navbar/Navbar.jsx";
-import PropTypes from 'prop-types';
+import { AuthContext } from '../../AuthContext.jsx';
 
-const SignupUser = ({ onLogout }) => {
+const SignupUser = () => {
+    const { isAuthenticated, hasAnyRole, handleLogout, userRoles, username } = useContext(AuthContext);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
@@ -14,26 +15,26 @@ const SignupUser = ({ onLogout }) => {
         password: '',
         phoneNumber: ''
     });
-    const [responseMessage, setResponseMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [userRole, setUserRole] = useState('');
-    const [username, setUsername] = useState('');
 
     useEffect(() => {
-        const storedRoles = sessionStorage.getItem('roles');
-        const username = sessionStorage.getItem('username');
-
-        setUsername(username);
-
-        if (storedRoles) {
-            const roles = JSON.parse(storedRoles);
-            if (roles.includes('ROLE_FARM_MANAGER') || roles.includes('ROLE_FARM_OWNER')) {
-                setUserRole('MANAGER_OR_OWNER');
-            } else {
-                setUserRole('OTHER_ROLE');
-            }
+        if (!isAuthenticated) {
+            navigate('/sign-in');
+            return;
         }
-    }, []);
+
+        if (!hasAnyRole(['ROLE_FARM_OWNER', 'ROLE_FARM_MANAGER'])) {
+            navigate('/not-authorized');
+            return;
+        }
+
+        if (userRoles.includes('ROLE_FARM_OWNER')) {
+            setUserRole('OWNER');
+        } else if (userRoles.includes('ROLE_FARM_MANAGER')) {
+            setUserRole('MANAGER');
+        } else {
+            setUserRole('OTHER_ROLE');
+        }
+    }, [isAuthenticated, hasAnyRole, navigate, userRoles]);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -87,17 +88,7 @@ const SignupUser = ({ onLogout }) => {
             return;
         }
 
-        const username = sessionStorage.getItem('username');
-        const storedRoles = sessionStorage.getItem('roles');
-
-        if (!username || !storedRoles) {
-            setErrorMessage('You are not authorized.');
-            return;
-        }
-
-        const roles = JSON.parse(storedRoles);
-
-        if (!roles.includes('ROLE_FARM_MANAGER') && !roles.includes('ROLE_FARM_OWNER')) {
+        if (!hasAnyRole(['ROLE_FARM_MANAGER', 'ROLE_FARM_OWNER'])) {
             setErrorMessage('You do not have permission to register a new user.');
             return;
         }
@@ -108,9 +99,9 @@ const SignupUser = ({ onLogout }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(formData)
             });
-
             if (response.ok) {
                 await response.json();
                 setResponseMessage('User registration successful!');
@@ -130,7 +121,7 @@ const SignupUser = ({ onLogout }) => {
 
     return (
         <div>
-            <Navbar onLogout={onLogout} userRole={userRole} username={username} />
+            <Navbar onLogout={handleLogout} userRole={userRole} username={username} />
             <h2>Register User</h2>
             <form onSubmit={handleSubmit}>
                 {/* Fields for user registration */}
@@ -188,7 +179,5 @@ const SignupUser = ({ onLogout }) => {
         </div>
     );
 };
-SignupUser.propTypes = {
-    onLogout: PropTypes.func.isRequired,
-};
+
 export default SignupUser;
