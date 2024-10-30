@@ -84,7 +84,7 @@ const ChangePassword = () => {
                 setSuccessMessage('Hasło zostało zmienione pomyślnie.');
                 setTimeout(() => {
                     navigate('/dashboard');
-                }, 1000);
+                }, 2000);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Nie udało się zmienić hasła.');

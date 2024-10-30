@@ -14,13 +14,13 @@ const Navbar = ({ userRole, username }) => {
     return (
         <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#f8f8f8' }}>
             <div style={{ display: 'flex', gap: '10px' }}>
-                <Link to="#">
+                <Link to="/dashboard">
                     <button>Gospodarstwo</button>
                 </Link>
                 <Link to="#">
                     <button>Zabiegi</button>
                 </Link>
-                <Link to="#">
+                <Link to="/equipment">
                     <button>Sprzęt</button>
                 </Link>
                 <Link to="#">
@@ -31,7 +31,7 @@ const Navbar = ({ userRole, username }) => {
                 </Link>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', position: 'relative' }}>
-                {(userRole === 'MANAGER_OR_OWNER') && (
+                {(userRole === 'OWNER' || userRole === 'MANAGER') && (
                     <Link to="/signup-user">
                         <button>Zarejestruj Użytkownika</button>
                     </Link>
