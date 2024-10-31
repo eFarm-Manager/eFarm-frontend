@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-import { AuthContext } from '../../AuthContext.jsx';
+import { useAuth } from '../../AuthContext.jsx';
 
 const NewActivationCode = () => {
     const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ const NewActivationCode = () => {
         username,
         handleLogout,
         handleExpireCodeInfoUpdate,
-    } = useContext(AuthContext);
+    } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {

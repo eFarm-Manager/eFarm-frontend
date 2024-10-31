@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-import { AuthContext } from '../../AuthContext.jsx';
+import { useAuth } from '../../AuthContext.jsx';
 
 const ChangePassword = () => {
     const [formData, setFormData] = useState({
@@ -9,7 +9,7 @@ const ChangePassword = () => {
         newPassword: '',
         confirmNewPassword: '',
     });
-    const { isAuthenticated, userRoles, username } = useContext(AuthContext);
+    const { isAuthenticated, userRoles, username } = useAuth();
 
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -17,6 +17,8 @@ const ChangePassword = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('isAuthenticated:', isAuthenticated);
+        console.log('userRoles:', userRoles);
         if (!isAuthenticated) {
             navigate('/sign-in');
             return;

@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
-import { AuthContext } from '../../AuthContext.jsx';
+import { useAuth } from '../../AuthContext.jsx';
 
 
 const Navbar = ({ userRole, username }) => {
     const [showDropdown, setShowDropdown] = useState(false);
-    const { handleLogout } = useContext(AuthContext);
+    const { handleLogout } = useAuth();
 
     const handleUsernameClick = () => {
         setShowDropdown(!showDropdown);

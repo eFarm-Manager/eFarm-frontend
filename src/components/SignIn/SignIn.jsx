@@ -1,9 +1,9 @@
 import {useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../AuthContext.jsx';
+import { useAuth } from '../../AuthContext.jsx';
 
 const SignIn = () => {
-    const { handleLogin } = useContext(AuthContext);
+    const { handleLogin } = useAuth();
     const [formData, setFormData] = useState({
         username: '',
         password: ''
