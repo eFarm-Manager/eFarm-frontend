@@ -9,6 +9,13 @@ const Navbar = () => {
     const handleUsernameClick = () => {
         setShowDropdown(!showDropdown);
     };
+    const userRole = user.roles.includes('ROLE_FARM_OWNER')
+        ? 'OWNER'
+        : user.roles.includes('ROLE_FARM_MANAGER')
+            ? 'MANAGER'
+            : user.roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
+                ? 'OPERATOR'
+                : 'OTHER_ROLE';
 
     return (
         <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#f8f8f8' }}>

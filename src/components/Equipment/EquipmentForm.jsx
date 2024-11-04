@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const EquipmentForm = ({ onClose, equipmentData = null }) => {
     const [categories, setCategories] = useState([]);
@@ -7,7 +8,6 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
     const [formData, setFormData] = useState(equipmentData || {});
 
     useEffect(() => {
-        // Fetch categories and their fields
         const fetchCategories = async () => {
             try {
                 const response = await fetch('/api/equipment/categories', {
@@ -137,7 +137,6 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
     );
 };
 
-// Styles for the modal
 const modalStyle = {
     position: 'fixed',
     top: 0,
@@ -157,5 +156,12 @@ const modalContentStyle = {
     maxHeight: '80%',
     overflowY: 'auto',
 };
-
+EquipmentForm.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    equipmentData: PropTypes.shape({
+        equipmentId: PropTypes.number,
+        equipmentName: PropTypes.string,
+        category: PropTypes.string,
+    }),
+};
 export default EquipmentForm;
