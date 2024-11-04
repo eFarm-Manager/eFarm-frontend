@@ -1,16 +1,15 @@
 import { Link } from 'react-router-dom';
-import {useContext, useState} from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { useAuth } from '../../AuthContext.jsx';
 
-
-const Navbar = ({ userRole, username }) => {
+const Navbar = () => {
     const [showDropdown, setShowDropdown] = useState(false);
-    const { handleLogout } = useAuth();
+    const { user, handleLogout } = useAuth();
 
     const handleUsernameClick = () => {
         setShowDropdown(!showDropdown);
     };
+
     return (
         <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#f8f8f8' }}>
             <div style={{ display: 'flex', gap: '10px' }}>
@@ -38,7 +37,7 @@ const Navbar = ({ userRole, username }) => {
                 )}
                 <div style={{ position: 'relative' }}>
           <span onClick={handleUsernameClick} style={{ cursor: 'pointer' }}>
-            {username}
+            {user.username}
           </span>
                     {showDropdown && (
                         <div
@@ -71,9 +70,5 @@ const Navbar = ({ userRole, username }) => {
             </div>
         </nav>
     );
-};
-Navbar.propTypes = {
-    userRole: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
 };
 export default Navbar;

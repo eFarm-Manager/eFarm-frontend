@@ -1,18 +1,17 @@
-import {useEffect, useContext, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
 
 const Dashboard = () => {
-    const { isAuthenticated, user, expireCodeInfo, handleLogout } = useAuth();
+    const { user, expireCodeInfo, handleLogout } = useAuth();
     const [showExpireCodeInfo, setShowExpireCodeInfo] = useState(!!expireCodeInfo);
     const [userRole, setUserRole] = useState('');
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const username = sessionStorage.getItem('username');
-        console.log('isAuthenticated:', user);
+        //const username = sessionStorage.getItem('username');
         // if (!user.username || !user.roles) {
         //     navigate('/sign-in');
         // }

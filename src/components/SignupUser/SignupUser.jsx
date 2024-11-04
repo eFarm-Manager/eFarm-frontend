@@ -1,10 +1,10 @@
-import {useEffect, useState, useContext} from 'react';
+import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../Navbar/Navbar.jsx";
 import { useAuth } from '../../AuthContext.jsx';
 
 const SignupUser = () => {
-    const { isAuthenticated, hasAnyRole, handleLogout, user } = useAuth();
+    const { handleLogout, user } = useAuth();
     const navigate = useNavigate();
     const [userRole, setUserRole] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
