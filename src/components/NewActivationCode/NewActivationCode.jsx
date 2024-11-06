@@ -12,9 +12,7 @@ const NewActivationCode = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [userRole, setUserRole] = useState('');
     const {
-        isAuthenticated,
-        userRoles,
-        username,
+        user,
         handleLogout,
         handleExpireCodeInfoUpdate,
     } = useAuth();

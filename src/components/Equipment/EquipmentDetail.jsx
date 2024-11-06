@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
+import EquipmentForm from './EquipmentForm.jsx';
 
 const EquipmentDetail = () => {
     const { id } = useParams();
     const [equipmentData, setEquipmentData] = useState(null);
     const [userRole, setUserRole] = useState('');
-    const { userRoles, username, isAuthenticated } = useAuth();
+    const { user, handleLogout } = useAuth();
     const navigate = useNavigate();
     const [showEditForm, setShowEditForm] = useState(false);
 
