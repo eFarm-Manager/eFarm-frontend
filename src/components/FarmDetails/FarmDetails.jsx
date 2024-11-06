@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-import { AuthContext } from '../../AuthContext.jsx';
+import { useAuth } from '../../AuthContext.jsx';
 
 
 const FarmDetails = () => {
@@ -20,7 +20,7 @@ const FarmDetails = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [userRole, setUserRole] = useState('');
-    const { userRoles, username, isAuthenticated } = useContext(AuthContext);
+    const { userRoles, username, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
 
