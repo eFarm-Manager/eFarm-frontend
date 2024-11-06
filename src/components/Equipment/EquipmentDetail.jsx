@@ -1,13 +1,13 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-import { AuthContext } from '../../AuthContext.jsx';
+import { useAuth } from '../../AuthContext.jsx';
 
 const EquipmentDetail = () => {
     const { id } = useParams();
     const [equipmentData, setEquipmentData] = useState(null);
     const [userRole, setUserRole] = useState('');
-    const { userRoles, username, isAuthenticated } = useContext(AuthContext);
+    const { userRoles, username, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
 
