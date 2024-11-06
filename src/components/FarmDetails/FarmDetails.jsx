@@ -25,24 +25,16 @@ const FarmDetails = () => {
 
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            navigate('/sign-in');
-            return;
-        }
-
-        // Set userRole based on userRoles
-        if (userRoles.includes('ROLE_FARM_OWNER')) {
-            setUserRole('OWNER');
-        } else if (userRoles.includes('ROLE_FARM_MANAGER')) {
-            setUserRole('MANAGER');
-        } else if (userRoles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')) {
-            setUserRole('OPERATOR');
-        } else {
-            setUserRole('OTHER_ROLE');
-        }
-
-        fetchFarmDetails();
-    }, [navigate, isAuthenticated, userRoles]);
+        const userRole = user.roles.includes('ROLE_FARM_OWNER')
+            ? 'OWNER'
+            : user.roles.includes('ROLE_FARM_MANAGER')
+                ? 'MANAGER'
+                : user.roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
+                    ? 'OPERATOR'
+                    : 'OTHER_ROLE';
+        setUserRole(userRole);
+        fetchFarmDetails('');
+    }, [navigate, user]);
 
     const fetchFarmDetails = async () => {
         try {
@@ -137,7 +129,7 @@ const FarmDetails = () => {
 
     return (
         <div>
-            <Navbar userRole={userRole} username={username} />
+            <Navbar onLogout={handleLogout} userRole={userRole} username={user.username} />
             <div style={{ padding: '20px' }}>
                 <h2>Farm Details</h2>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}

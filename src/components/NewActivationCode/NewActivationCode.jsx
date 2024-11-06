@@ -21,18 +21,13 @@ const NewActivationCode = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            navigate('/sign-in');
-            return;
-        }
-
-        if (!userRoles.includes('ROLE_FARM_OWNER')) {
+        if (!user.roles.includes('ROLE_FARM_OWNER')) {
             navigate('/not-authorized');
             return;
         }
 
         setUserRole('OWNER');
-    }, [navigate, isAuthenticated, userRoles]);
+    }, [user, navigate]);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -93,7 +88,7 @@ const NewActivationCode = () => {
 
     return (
         <div>
-            <Navbar onLogout={handleLogout} userRole={userRole} username={username} />
+            <Navbar onLogout={handleLogout} userRole={userRole} username={user.username} />
             <div style={{ padding: '20px' }}>
                 <h2>New Activation Code</h2>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
