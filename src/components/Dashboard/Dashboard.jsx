@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
 import UserList from './UserList';
-import LandParcelList from '../AddLandParcel/LandParcelList';
+import LandParcelList from '../AddLandparcel/LandParcelList';
 import './Dashboard.css'; // Dodanie pliku CSS dla stylów
 
 const Dashboard = () => {
