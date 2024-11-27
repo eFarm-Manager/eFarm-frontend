@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { MapComponent } from './Map';
-import { ParcelForm } from './AddLandParcelForm';
+import { ParcelForm } from './AddLandparcelForm';
 import './AddLandparcel.css';
 import { parseXmlResponse } from '../helpers/parseXmlResponse';
 import PropTypes from 'prop-types';
