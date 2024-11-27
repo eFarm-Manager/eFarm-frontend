@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
-
+import './FarmDetails.css'; // Importujemy plik CSS
 
 const FarmDetails = () => {
     const [farmData, setFarmData] = useState(null);
@@ -20,22 +20,39 @@ const FarmDetails = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [userRole, setUserRole] = useState('');
-    const { user, handleLogout } = useAuth();
+    const { user, userRoles, username, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        document.title = 'Szczegóły gospodarstwa';
+    }, []);
 
     useEffect(() => {
-        const userRole = user.roles.includes('ROLE_FARM_OWNER')
+        if (!isAuthenticated) {
+            navigate('/sign-in');
+            return;
+        }
+
+        const role = user.roles.includes('ROLE_FARM_OWNER')
             ? 'OWNER'
             : user.roles.includes('ROLE_FARM_MANAGER')
                 ? 'MANAGER'
                 : user.roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
                     ? 'OPERATOR'
                     : 'OTHER_ROLE';
-        setUserRole(userRole);
-        fetchFarmDetails('');
-    }, [navigate, user]);
+        setUserRole(role);
 
+        // Oryginalny kod pobierający dane gospodarstwa z backendu
+        /*
+        fetchFarmDetails();
+        */
+
+        // Użycie mockowanych danych
+        fetchMockFarmDetails();
+    }, [navigate, isAuthenticated, userRoles, user]);
+
+    // Oryginalna funkcja pobierająca dane z backendu
+    /*
     const fetchFarmDetails = async () => {
         try {
             const response = await fetch('/api/farm/details', {
@@ -67,6 +84,36 @@ const FarmDetails = () => {
             setErrorMessage(`Error: ${error.message}`);
         }
     };
+    */
+
+    // Funkcja pobierająca mockowane dane
+    const fetchMockFarmDetails = () => {
+        // Mockowane dane gospodarstwa
+        const mockFarmData = {
+            farmName: 'Gospodarstwo Rolne Kowalski',
+            farmNumber: 'FARM12345',
+            feedNumber: 'FEED67890',
+            sanitaryRegisterNumber: 'SANITARY54321',
+            street: 'Wiejska',
+            buildingNumber: '12A',
+            zipCode: '00-001',
+            city: 'Warszawa',
+            activationCodeExpireDate: '2024-12-31', // Jeśli potrzebne
+        };
+
+        setFarmData(mockFarmData);
+        setFormData({
+            farmName: mockFarmData.farmName || '',
+            farmNumber: mockFarmData.farmNumber || '',
+            feedNumber: mockFarmData.feedNumber || '',
+            sanitaryRegisterNumber: mockFarmData.sanitaryRegisterNumber || '',
+            street: mockFarmData.street || '',
+            buildingNumber: mockFarmData.buildingNumber || '',
+            zipCode: mockFarmData.zipCode || '',
+            city: mockFarmData.city || ''
+        });
+    };
+
     const toggleEditMode = () => {
         setEditMode(!editMode);
         setSuccessMessage('');
@@ -101,6 +148,8 @@ const FarmDetails = () => {
         setErrorMessage('');
         setSuccessMessage('');
 
+        // Oryginalny kod wysyłający dane do backendu
+        /*
         try {
             const response = await fetch('/api/farm/details', {
                 method: 'PUT',
@@ -125,137 +174,128 @@ const FarmDetails = () => {
         } catch (error) {
             setErrorMessage(`Error: ${error.message}`);
         }
+        */
+
+        // Mockowanie akcji zapisu danych
+        // Symulujemy udane zapisanie danych i aktualizujemy stan
+        setSuccessMessage('Dane gospodarstwa zostały zaktualizowane.');
+        setFarmData({
+            ...farmData,
+            ...formData,
+        });
+        setEditMode(false);
     };
 
     return (
-        <div>
-            <Navbar onLogout={handleLogout} userRole={userRole} username={user.username} />
-            <div style={{ padding: '20px' }}>
-                <h2>Farm Details</h2>
-                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-                {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-                {farmData ? (
-                    editMode ? (
-                        // Edit Mode Form
-                        <form onSubmit={handleSubmit}>
-                            <div>
-                                <label>Farm Name:</label>
-                                <input
-                                    type="text"
-                                    name="farmName"
-                                    value={formData.farmName}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div>
-                                <label>Farm Number:</label>
-                                <input
-                                    type="text"
-                                    name="farmNumber"
-                                    value={formData.farmNumber}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div>
-                                <label>Feed Number:</label>
-                                <input
-                                    type="text"
-                                    name="feedNumber"
-                                    value={formData.feedNumber}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div>
-                                <label>Sanitary Register Number:</label>
-                                <input
-                                    type="text"
-                                    name="sanitaryRegisterNumber"
-                                    value={formData.sanitaryRegisterNumber}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div>
-                                <label>Street:</label>
-                                <input
-                                    type="text"
-                                    name="street"
-                                    value={formData.street}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div>
-                                <label>Building Number:</label>
-                                <input
-                                    type="text"
-                                    name="buildingNumber"
-                                    value={formData.buildingNumber}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div>
-                                <label>ZIP Code:</label>
-                                <input
-                                    type="text"
-                                    name="zipCode"
-                                    value={formData.zipCode}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div>
-                                <label>City:</label>
-                                <input
-                                    type="text"
-                                    name="city"
-                                    value={formData.city}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <button type="submit">Save Changes</button>
-                            <button type="button" onClick={handleCancelEdit}>
-                                Cancel
-                            </button>
-                        </form>
-                    ) : (
-                        // View Mode
+        <div className="farm-details-container">
+            <Navbar userRole={userRole} username={username} />
+            <h2>Szczegóły Gospodarstwa</h2>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {successMessage && <p className="success-message">{successMessage}</p>}
+            {farmData ? (
+                editMode ? (
+                    // Formularz w trybie edycji
+                    <form onSubmit={handleSubmit}>
                         <div>
-                            <p>
-                                <strong>Farm Name:</strong> {farmData.farmName}
-                            </p>
-                            <p>
-                                <strong>Farm Number:</strong> {farmData.farmNumber}
-                            </p>
-                            <p>
-                                <strong>Feed Number:</strong> {farmData.feedNumber}
-                            </p>
-                            <p>
-                                <strong>Sanitary Register Number:</strong> {farmData.sanitaryRegisterNumber}
-                            </p>
-                            <p>
-                                <strong>Street:</strong> {farmData.street}
-                            </p>
-                            <p>
-                                <strong>Building Number:</strong> {farmData.buildingNumber}
-                            </p>
-                            <p>
-                                <strong>ZIP Code:</strong> {farmData.zipCode}
-                            </p>
-                            <p>
-                                <strong>City:</strong> {farmData.city}
-                            </p>
-                            {userRole === 'OWNER' && farmData.expireCodeInfo && (
-                                <p>
-                                    <strong>Activation Code Expires On:</strong> {farmData.expireCodeInfo}
-                                </p>
-                            )}
-                            {(userRole === 'OWNER' || userRole === 'MANAGER') && (
-                                <button onClick={toggleEditMode}>Edit Farm Details</button>
-                            )}
+                            <label>Nazwa Gospodarstwa:</label>
+                            <input
+                                type="text"
+                                name="farmName"
+                                value={formData.farmName}
+                                onChange={handleInputChange}
+                            />
                         </div>
-                    )
+                        <div>
+                            <label>Numer Gospodarstwa:</label>
+                            <input
+                                type="text"
+                                name="farmNumber"
+                                value={formData.farmNumber}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Numer Paszowy:</label>
+                            <input
+                                type="text"
+                                name="feedNumber"
+                                value={formData.feedNumber}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Numer Rejestru Sanitarnego:</label>
+                            <input
+                                type="text"
+                                name="sanitaryRegisterNumber"
+                                value={formData.sanitaryRegisterNumber}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Ulica:</label>
+                            <input
+                                type="text"
+                                name="street"
+                                value={formData.street}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Numer Budynku:</label>
+                            <input
+                                type="text"
+                                name="buildingNumber"
+                                value={formData.buildingNumber}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Kod Pocztowy:</label>
+                            <input
+                                type="text"
+                                name="zipCode"
+                                value={formData.zipCode}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Miasto:</label>
+                            <input
+                                type="text"
+                                name="city"
+                                value={formData.city}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className="form-buttons">
+                            <button type="submit">Zapisz Zmiany</button>
+                            <button type="button" onClick={handleCancelEdit}>
+                                Anuluj
+                            </button>
+                        </div>
+                    </form>
                 ) : (
-                    <p>Loading farm details...</p>
-                )}
-            </div>
+                    <div className="farm-details">
+                        <p><strong>Nazwa Gospodarstwa:</strong> {farmData.farmName}</p>
+                        <p><strong>Numer Gospodarstwa:</strong> {farmData.farmNumber}</p>
+                        <p><strong>Numer Paszowy:</strong> {farmData.feedNumber}</p>
+                        <p><strong>Numer Rejestru Sanitarnego:</strong> {farmData.sanitaryRegisterNumber}</p>
+                        <p><strong>Ulica:</strong> {farmData.street}</p>
+                        <p><strong>Numer Budynku:</strong> {farmData.buildingNumber}</p>
+                        <p><strong>Kod Pocztowy:</strong> {farmData.zipCode}</p>
+                        <p><strong>Miasto:</strong> {farmData.city}</p>
+                        {userRole === 'OWNER' && farmData.activationCodeExpireDate && (
+                            <p><strong>Kod Aktywacyjny Wygasa:</strong> {farmData.activationCodeExpireDate}</p>
+                        )}
+                        {(userRole === 'OWNER' || userRole === 'MANAGER') && (
+                            <button className="edit-button" onClick={toggleEditMode}>Edytuj Dane Gospodarstwa</button>
+                        )}
+                    </div>
+                )
+            ) : (
+                <div className="loading-container">Ładowanie danych gospodarstwa...</div>
+            )}
         </div>
     );
 };

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
+import './NewActivationCode.css'; // Importujemy plik CSS
 
 const NewActivationCode = () => {
     const [formData, setFormData] = useState({
@@ -12,6 +13,9 @@ const NewActivationCode = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [userRole, setUserRole] = useState('');
     const {
+        isAuthenticated,
+        userRoles = [],
+        username,
         user,
         handleLogout,
         handleExpireCodeInfoUpdate,
@@ -19,13 +23,22 @@ const NewActivationCode = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.title = 'Nowy kod aktywacyjny';
+    }, []);
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/sign-in');
+            return;
+        }
+
         if (!user.roles.includes('ROLE_FARM_OWNER')) {
             navigate('/not-authorized');
             return;
         }
 
         setUserRole('OWNER');
-    }, [user, navigate]);
+    }, [navigate, isAuthenticated, userRoles, user]);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -69,7 +82,6 @@ const NewActivationCode = () => {
             });
 
             if (response.ok) {
-                //const data = await response.json();
                 setSuccessMessage('Activation code updated successfully.');
                 handleExpireCodeInfoUpdate(null);
                 setTimeout(() => {
@@ -85,15 +97,15 @@ const NewActivationCode = () => {
     };
 
     return (
-        <div>
-            <Navbar onLogout={handleLogout} userRole={userRole} username={user.username} />
-            <div style={{ padding: '20px' }}>
-                <h2>New Activation Code</h2>
-                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-                {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+        <div className="new-activation-code-container">
+            <Navbar onLogout={handleLogout} userRole={userRole} username={username} />
+            <div>
+                <h2>Aktualizacja kodu</h2>
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+                {successMessage && <p className="success-message">{successMessage}</p>}
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label>Password:</label>
+                        <label>Hasło:</label>
                         <input
                             type="password"
                             name="password"
@@ -102,7 +114,7 @@ const NewActivationCode = () => {
                         />
                     </div>
                     <div>
-                        <label>New Activation Code:</label>
+                        <label>Nowy kod:</label>
                         <input
                             type="text"
                             name="newActivationCode"
@@ -110,12 +122,11 @@ const NewActivationCode = () => {
                             onChange={handleInputChange}
                         />
                     </div>
-                    <button type="submit">Submit</button>
+                    <button type="submit">Zatwierdź</button>
                 </form>
             </div>
         </div>
     );
 };
-
 
 export default NewActivationCode;
