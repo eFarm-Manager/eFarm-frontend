@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
 import EquipmentForm from './EquipmentForm';
-import './EquipmentList.css';  // Dodanie pliku CSS
+import './EquipmentList.css';
 
 const EquipmentList = () => {
     const [equipmentList, setEquipmentList] = useState([]);
@@ -17,7 +17,7 @@ const EquipmentList = () => {
     useEffect(() => {
         document.title = 'Sprzęt';
     }, []);
-
+    /*
     const mockEquipmentData = [
         {
             equipmentId: 1,
@@ -45,7 +45,7 @@ const EquipmentList = () => {
         },
         // Dodaj więcej mockowanych danych
     ];
-
+    */
     useEffect(() => {
         if (!isAuthenticated) {
             navigate('/sign-in');
@@ -62,21 +62,23 @@ const EquipmentList = () => {
         setUserRole(role);
 
         // Oryginalny kod pobierający listę sprzętu z backendu
-        /*
+
         fetchEquipmentList('');
-        */
+
 
         // Użycie mockowanych danych
-        fetchMockEquipmentList('');
+        //fetchMockEquipmentList('');
     }, [navigate, isAuthenticated, user]);
 
+    /*
     const fetchMockEquipmentList = (query) => {
         const filteredData = mockEquipmentData.filter((equipment) =>
             equipment.equipmentName.toLowerCase().includes(query.toLowerCase())
         );
         setEquipmentList(filteredData);
     };
-    /*
+     */
+
     const fetchEquipmentList = async (query) => {
         try {
             const url = query.length >= 3 ? `/api/equipment/all?searchQuery=${encodeURIComponent(query)}` : '/api/equipment/all';
@@ -98,17 +100,17 @@ const EquipmentList = () => {
             console.error('Error fetching equipment list:', error);
         }
     };
-    */
+
     const handleSearchChange = (e) => {
         const query = e.target.value;
         setSearchQuery(query);
 
         if (query.length >= 3 || query.length === 0) {
             // Oryginalny kod
-            // fetchEquipmentList(query);
+            fetchEquipmentList(query);
 
             // Użycie mockowanych danych
-            fetchMockEquipmentList(query);
+            // fetchMockEquipmentList(query);
         }
     };
 
@@ -129,8 +131,8 @@ const EquipmentList = () => {
     const closeForm = () => {
         setShowForm(false);
         // Po zamknięciu formularza, odśwież listę sprzętu
-        // fetchEquipmentList(searchQuery);
-        fetchMockEquipmentList(searchQuery);
+        fetchEquipmentList(searchQuery);
+        // fetchMockEquipmentList(searchQuery);
     };
 
     return (

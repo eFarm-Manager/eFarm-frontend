@@ -41,37 +41,17 @@ const LandParcelList = () => {
             params.append('minArea', minArea);
             params.append('maxArea', maxArea);
 
-            // Mockowane dane działek
-            const mockParcels = [
-                {
-                    id: 1,
-                    commune: 'Gmina A',
-                    landparcelNumber: '123/45',
-                    area: 10.5,
-                    landOwnershipStatus: 'STATUS_PRIVATELY_OWNED',
-                    longitude: 20.12345,
-                    latitude: 52.12345,
-                },
-                {
-                    id: 2,
-                    commune: 'Gmina B',
-                    landparcelNumber: '678/90',
-                    area: 15.2,
-                    landOwnershipStatus: 'STATUS_LEASED',
-                    longitude: 20.12345,
-                    latitude: 52.12345,
-                },
-                // Dodaj więcej mockowanych działek
-            ];
-
-            // Filtruj mockowane dane na podstawie parametrów
-            const filteredParcels = mockParcels.filter((parcel) => {
-                const matchesSearch = searchQuery.length < 3 || parcel.landparcelNumber.includes(searchQuery);
-                const matchesArea = parcel.area >= minArea && parcel.area <= maxArea;
-                return matchesSearch && matchesArea;
+            // Replace the URL below with your backend API endpoint
+            const response = await fetch(`/api/landparcel/all?${params.toString()}`, {
+                method: 'GET',
             });
 
-            setParcels(filteredParcels);
+            if (!response.ok) {
+                throw new Error(`Error fetching parcels: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            setParcels(data);
         } catch (error) {
             console.error('Error fetching parcels:', error);
         }
@@ -112,9 +92,22 @@ const LandParcelList = () => {
     };
 
     const confirmDeleteParcel = async () => {
-        setParcels(prevParcels => prevParcels.filter(parcel => parcel.id !== parcelToDelete.id));
-        setShowDeleteConfirm(false);
-        setParcelToDelete(null);
+        try {
+            // Replace the URL below with your backend API endpoint
+            const response = await fetch(`/api/landparcel/${parcelToDelete.id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error deleting parcel: ${response.statusText}`);
+            }
+
+            setParcels((prevParcels) => prevParcels.filter((parcel) => parcel.id !== parcelToDelete.id));
+            setShowDeleteConfirm(false);
+            setParcelToDelete(null);
+        } catch (error) {
+            console.error('Error deleting parcel:', error);
+        }
     };
 
     const closeAddForm = () => {

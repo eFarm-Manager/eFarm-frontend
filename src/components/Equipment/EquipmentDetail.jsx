@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
-import './EquipmentDetail.css'; // Dodanie pliku CSS dla stylów
+import './EquipmentDetail.css';
 
 const EquipmentDetail = () => {
     const { id } = useParams();
@@ -11,6 +11,7 @@ const EquipmentDetail = () => {
     const { user, username, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
+    /*
     const mockEquipmentData = [
         {
             equipmentId: 1,
@@ -35,7 +36,7 @@ const EquipmentDetail = () => {
             inspectionExpireDate: '2024-06-30',
         },
     ];
-
+    */
     useEffect(() => {
         if (!isAuthenticated) {
             navigate('/sign-in');
@@ -52,7 +53,7 @@ const EquipmentDetail = () => {
         setUserRole(role);
 
         // Oryginalny kod pobierający szczegóły sprzętu z backendu
-        /*
+
         const fetchEquipmentDetail = async () => {
             try {
                 const response = await fetch(`/api/equipment/${id}`, {
@@ -75,9 +76,10 @@ const EquipmentDetail = () => {
         };
 
         fetchEquipmentDetail();
-        */
+
 
         // Użycie mockowanych danych
+        /*
         const fetchMockEquipmentDetail = () => {
             const equipment = mockEquipmentData.find((eq) => eq.equipmentId === parseInt(id));
             if (equipment) {
@@ -88,6 +90,7 @@ const EquipmentDetail = () => {
         };
 
         fetchMockEquipmentDetail();
+         */
     }, [isAuthenticated, navigate, id, user]);
 
     if (!equipmentData) {

@@ -31,7 +31,7 @@ const EditLandparcel = ({ onClose, parcelData }) => {
         };
 
         // Wyślij dane do backendu (zakomentowane dla przykładu)
-        /*
+
         try {
           const response = await fetch(`/api/landparcel/${parcelData.id}`, {
             method: 'PUT',
@@ -50,11 +50,15 @@ const EditLandparcel = ({ onClose, parcelData }) => {
         } catch (error) {
           console.error('Error updating parcel:', error);
         }
-        */
+
 
         // Akcja testowa
+        /*
         console.log('Aktualizacja działki:', formData);
         onClose();
+        */
+
+
     };
 
     return (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import './ChangePasswordModal.css'; // Zaimportuj plik z CSS
+import './ChangePasswordModal.css';
 
 const ChangePasswordModal = ({ user, onClose }) => {
     const [newPassword, setNewPassword] = useState('');
@@ -13,7 +13,7 @@ const ChangePasswordModal = ({ user, onClose }) => {
         e.preventDefault();
 
         // Oryginalny kod wysyłający żądanie do backendu
-        /*
+
         fetch(`/api/users/update-password/${user.id}`, {
             method: 'PUT',
             headers: {
@@ -31,12 +31,14 @@ const ChangePasswordModal = ({ user, onClose }) => {
                 }
             })
             .catch(error => console.error('Error changing password:', error));
-        */
+
 
         // Mockowanie akcji
+        /*
         console.log(`Changing password for user ${user.username} to ${newPassword}`);
         alert('Hasło zostało zmienione (mock).');
         onClose();
+         */
     };
 
     return (

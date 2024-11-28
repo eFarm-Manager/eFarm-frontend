@@ -89,7 +89,7 @@ const AddLandparcel = ({ onClose }) => {
         };
 
         // Original code sending data to the backend (currently commented)
-        /*
+
         try {
           const response = await fetch('/api/landparcel/new', {
             method: 'POST',
@@ -108,11 +108,14 @@ const AddLandparcel = ({ onClose }) => {
         } catch (error) {
           console.error('Error adding parcel:', error);
         }
-        */
+
 
         // Mock action
+        /*
         console.log('Adding parcel:', formData);
         onClose();
+
+         */
     };
 
     return (

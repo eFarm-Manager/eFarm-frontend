@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
-import './ChangePassword.css'; // Importujemy plik CSS
+import './ChangePassword.css';
 
 const ChangePassword = () => {
     const [formData, setFormData] = useState({

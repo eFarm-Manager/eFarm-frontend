@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
-import './FarmDetails.css'; // Importujemy plik CSS
+import './FarmDetails.css';
 
 const FarmDetails = () => {
     const [farmData, setFarmData] = useState(null);
@@ -43,16 +43,15 @@ const FarmDetails = () => {
         setUserRole(role);
 
         // Oryginalny kod pobierający dane gospodarstwa z backendu
-        /*
         fetchFarmDetails();
-        */
+
 
         // Użycie mockowanych danych
-        fetchMockFarmDetails();
+        //fetchMockFarmDetails();
     }, [navigate, isAuthenticated, userRoles, user]);
 
     // Oryginalna funkcja pobierająca dane z backendu
-    /*
+
     const fetchFarmDetails = async () => {
         try {
             const response = await fetch('/api/farm/details', {
@@ -84,9 +83,10 @@ const FarmDetails = () => {
             setErrorMessage(`Error: ${error.message}`);
         }
     };
-    */
+
 
     // Funkcja pobierająca mockowane dane
+    /*
     const fetchMockFarmDetails = () => {
         // Mockowane dane gospodarstwa
         const mockFarmData = {
@@ -113,6 +113,7 @@ const FarmDetails = () => {
             city: mockFarmData.city || ''
         });
     };
+    */
 
     const toggleEditMode = () => {
         setEditMode(!editMode);
@@ -149,7 +150,6 @@ const FarmDetails = () => {
         setSuccessMessage('');
 
         // Oryginalny kod wysyłający dane do backendu
-        /*
         try {
             const response = await fetch('/api/farm/details', {
                 method: 'PUT',
@@ -174,16 +174,18 @@ const FarmDetails = () => {
         } catch (error) {
             setErrorMessage(`Error: ${error.message}`);
         }
-        */
+
 
         // Mockowanie akcji zapisu danych
         // Symulujemy udane zapisanie danych i aktualizujemy stan
+        /*
         setSuccessMessage('Dane gospodarstwa zostały zaktualizowane.');
         setFarmData({
             ...farmData,
             ...formData,
         });
         setEditMode(false);
+         */
     };
 
     return (
@@ -194,7 +196,6 @@ const FarmDetails = () => {
             {successMessage && <p className="success-message">{successMessage}</p>}
             {farmData ? (
                 editMode ? (
-                    // Formularz w trybie edycji
                     <form onSubmit={handleSubmit}>
                         <div>
                             <label>Nazwa Gospodarstwa:</label>

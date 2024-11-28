@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import './EditUserModal.css'; // Zaimportuj plik z CSS
+import './EditUserModal.css';
 
 const EditUserModal = ({ user, onClose }) => {
     const [formData, setFormData] = useState({
@@ -23,7 +23,6 @@ const EditUserModal = ({ user, onClose }) => {
         e.preventDefault();
 
         // Oryginalny kod wysyłający żądanie do backendu
-        /*
         fetch(`/api/users/update/${user.id}`, {
             method: 'PUT',
             headers: {
@@ -41,12 +40,13 @@ const EditUserModal = ({ user, onClose }) => {
                 }
             })
             .catch(error => console.error('Error updating user data:', error));
-        */
 
         // Mockowanie akcji
+        /*
         console.log(`Updating user ${user.username} with data:`, formData);
         alert('Dane użytkownika zostały zaktualizowane (mock).');
         onClose();
+         */
     };
 
     return (

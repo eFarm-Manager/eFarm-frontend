@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import './EquipmentForm.css'; // Dodanie pliku CSS dla stylów
+import './EquipmentForm.css';
 
 const EquipmentForm = ({ onClose, equipmentData = null }) => {
     const [categories, setCategories] = useState([]);
@@ -9,8 +9,6 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
     const [formData, setFormData] = useState(equipmentData || {});
 
     useEffect(() => {
-        // Oryginalny kod pobierający kategorie z backendu
-        /*
         const fetchCategories = async () => {
             try {
                 const response = await fetch('/api/equipment/categories', {
@@ -33,9 +31,10 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
         };
 
         fetchCategories();
-        */
+
 
         // Mockowane dane kategorii
+        /*
         const mockCategories = [
             { categoryName: 'Traktory', fields: ['equipmentName', 'category', 'brand', 'model', 'power'] },
             { categoryName: 'Kombajny', fields: ['equipmentName', 'category', 'brand', 'model', 'capacity'] },
@@ -43,6 +42,7 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
             // Dodaj więcej kategorii według potrzeb
         ];
         setCategories(mockCategories);
+         */
     }, []);
 
     useEffect(() => {
@@ -72,7 +72,7 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-        setFormData({ category: e.target.value }); // Resetuj dane formularza przy zmianie kategorii
+        setFormData({ category: e.target.value });
     };
 
     const handleInputChange = (e) => {
@@ -82,11 +82,10 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        //const method = equipmentData ? 'PUT' : 'POST';
-        //const url = equipmentData ? `/api/equipment/${equipmentData.equipmentId}`: '/api/equipment/new';
+        const method = equipmentData ? 'PUT' : 'POST';
+        const url = equipmentData ? `/api/equipment/${equipmentData.equipmentId}`: '/api/equipment/new';
         try {
             // Oryginalny kod wysyłający dane do backendu
-            /*
             const response = await fetch(url, {
                 method: method,
                 headers: {
@@ -103,11 +102,12 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
                 console.error('Failed to submit equipment:', errorData.message);
                 alert(`Error: ${errorData.message}`);
             }
-            */
 
             // Mockowanie akcji dodawania/edycji sprzętu
+            /*
             console.log('Submitting data:', { ...formData, category: selectedCategory });
             onClose();
+             */
         } catch (error) {
             console.error('Error submitting equipment:', error);
             alert(`Error: ${error.message}`);

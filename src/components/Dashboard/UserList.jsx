@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext.jsx';
 import ChangePasswordModal from './ChangePasswordModal';
 import EditUserModal from './EditUserModal';
-import './UserList.css'; // Dodanie pliku CSS dla stylów
+import './UserList.css';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -30,7 +30,7 @@ const UserList = () => {
         setUserRole(role);
 
         // Oryginalny kod pobierający listę użytkowników z backendu
-        /*
+
         fetch('/api/users/all', {
             method: 'GET',
             headers: {
@@ -41,9 +41,9 @@ const UserList = () => {
             .then(response => response.json())
             .then(data => setUsers(data))
             .catch(error => console.error('Error fetching users:', error));
-        */
 
         // Mockowane dane użytkowników
+        /*
         const mockUsers = [
             {
                 id: 1,
@@ -67,11 +67,12 @@ const UserList = () => {
             },
         ];
         setUsers(mockUsers);
+         */
     }, [navigate, isAuthenticated, userRole, user]);
 
     const toggleActiveStatus = (userId) => {
         // Oryginalny kod wysyłający żądanie do backendu
-        /*
+
         fetch(`/api/users/toggle-active/${userId}`, {
             method: 'PATCH',
             headers: {
@@ -92,14 +93,16 @@ const UserList = () => {
                 }
             })
             .catch(error => console.error('Error toggling user active status:', error));
-        */
+
 
         // Mockowanie akcji
+        /*
         setUsers(prevUsers =>
             prevUsers.map(user =>
                 user.id === userId ? { ...user, active: !user.active } : user
             )
         );
+         */
     };
 
     const handleChangePassword = (user) => {
