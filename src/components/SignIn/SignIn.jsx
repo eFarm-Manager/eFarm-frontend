@@ -1,6 +1,7 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext.jsx';
+import './SignIn.css'; // Importujemy plik CSS
 
 const SignIn = () => {
     const { handleLogin } = useAuth();
@@ -10,6 +11,10 @@ const SignIn = () => {
     });
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = 'Logowanie';
+    }, []);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -44,12 +49,10 @@ const SignIn = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData),
-                credentials: 'include',
+                body: JSON.stringify(formData)
             });
 
             const data = await response.json();
-
 
             if (response.status === 403) {
                 const message = data.message || '';
@@ -73,32 +76,34 @@ const SignIn = () => {
                 handleLogin(expireCodeInfo);
                 navigate('/dashboard');
             } else {
-            setErrorMessage(data.message || 'Invalid login credentials.');
+                setErrorMessage(data.message || 'Invalid login credentials.');
             }
         } catch (error) {
-        setErrorMessage(`Error: ${error.message}`);
+            setErrorMessage(`Error: ${error.message}`);
         }
     };
 
     return (
-        <div>
+        <div className="sign-in-container">
             <h2>Sign In</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '400px' }}>
                 <input
                     type="text"
                     name="username"
                     placeholder="Username"
                     onChange={handleInputChange}
+                    className="form-input"
                 />
                 <input
                     type="password"
                     name="password"
                     placeholder="Password"
                     onChange={handleInputChange}
+                    className="form-input"
                 />
-                <button type="submit">Submit</button>
+                <button type="submit" className="submit-button">Submit</button>
             </form>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
     );
 };

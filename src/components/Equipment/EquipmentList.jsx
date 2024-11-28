@@ -3,26 +3,81 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
 import EquipmentForm from './EquipmentForm';
+import './EquipmentList.css';
 
 const EquipmentList = () => {
     const [equipmentList, setEquipmentList] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [userRole, setUserRole] = useState('');
-    const { user, handleLogout } = useAuth();
+    const [showForm, setShowForm] = useState(false);
+    const [editEquipmentData, setEditEquipmentData] = useState(null);
+    const { user, username, isAuthenticated } = useAuth();
     const navigate = useNavigate();
-    const [showAddForm, setShowAddForm] = useState(false);
 
     useEffect(() => {
-        const userRole = user.roles.includes('ROLE_FARM_OWNER')
+        document.title = 'Sprzęt';
+    }, []);
+    /*
+    const mockEquipmentData = [
+        {
+            equipmentId: 1,
+            equipmentName: 'Traktor John Deere',
+            category: 'Traktory',
+            brand: 'John Deere',
+            model: 'JD 5075E',
+            power: 75,
+        },
+        {
+            equipmentId: 2,
+            equipmentName: 'Kombajn New Holland',
+            category: 'Kombajny',
+            brand: 'New Holland',
+            model: 'CX7.90',
+            capacity: 9.0,
+        },
+        {
+            equipmentId: 3,
+            equipmentName: 'Pług Lemken',
+            category: 'Pługi',
+            brand: 'Lemken',
+            model: 'Juwel 8',
+            workingWidth: 3.5,
+        },
+        // Dodaj więcej mockowanych danych
+    ];
+    */
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/sign-in');
+            return;
+        }
+
+        const role = user.roles.includes('ROLE_FARM_OWNER')
             ? 'OWNER'
             : user.roles.includes('ROLE_FARM_MANAGER')
                 ? 'MANAGER'
                 : user.roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
                     ? 'OPERATOR'
                     : 'OTHER_ROLE';
-        setUserRole(userRole);
+        setUserRole(role);
+
+        // Oryginalny kod pobierający listę sprzętu z backendu
+
         fetchEquipmentList('');
-    }, [navigate, user]);
+
+
+        // Użycie mockowanych danych
+        //fetchMockEquipmentList('');
+    }, [navigate, isAuthenticated, user]);
+
+    /*
+    const fetchMockEquipmentList = (query) => {
+        const filteredData = mockEquipmentData.filter((equipment) =>
+            equipment.equipmentName.toLowerCase().includes(query.toLowerCase())
+        );
+        setEquipmentList(filteredData);
+    };
+     */
 
     const fetchEquipmentList = async (query) => {
         try {
@@ -51,90 +106,87 @@ const EquipmentList = () => {
         setSearchQuery(query);
 
         if (query.length >= 3 || query.length === 0) {
+            // Oryginalny kod
             fetchEquipmentList(query);
+
+            // Użycie mockowanych danych
+            // fetchMockEquipmentList(query);
         }
     };
 
     const handleEquipmentClick = (equipmentId) => {
         navigate(`/equipment/${equipmentId}`);
     };
+
     const handleAddEquipment = () => {
-        setShowAddForm(true);
+        setEditEquipmentData(null);
+        setShowForm(true);
     };
 
-    const handleFormClose = () => {
-        setShowAddForm(false);
-        fetchEquipmentList('');
+    const handleEditEquipment = (equipment) => {
+        setEditEquipmentData(equipment);
+        setShowForm(true);
     };
+
+    const closeForm = () => {
+        setShowForm(false);
+        // Po zamknięciu formularza, odśwież listę sprzętu
+        fetchEquipmentList(searchQuery);
+        // fetchMockEquipmentList(searchQuery);
+    };
+
     return (
         <div>
-            <Navbar onLogout={handleLogout} userRole={userRole} username={user.username} />
-            <div style={{ padding: '20px' }}>
+            <Navbar userRole={userRole} username={username} />
+            <div className="equipment-list-container">
                 <h2>Lista Sprzętu</h2>
-                <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                <button onClick={handleAddEquipment} className="navbar-button add-equipment-button">
+                    Dodaj Sprzęt
+                </button>
                 <input
                     type="text"
                     placeholder="Wyszukaj (minimum 3 znaki)"
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    style={{ width: '100%', padding: '8px', marginBottom: '20px' }}
+                    className="search-input"
                 />
-                {(userRole === 'OWNER' || userRole === 'MANAGER') && (
-                    <button onClick={handleAddEquipment} style={{ padding: '8px 16px' }}>
-                        Dodaj Sprzęt
-                    </button>
-                )}
-                </div>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <table className="equipment-table">
                     <thead>
                     <tr>
-                        <th style={tableHeaderStyle}>Nazwa Sprzętu</th>
-                        <th style={tableHeaderStyle}>Kategoria</th>
-                        <th style={tableHeaderStyle}>Marka</th>
-                        <th style={tableHeaderStyle}>Model</th>
+                        <th className="table-header">Nazwa Sprzętu</th>
+                        <th className="table-header">Kategoria</th>
+                        <th className="table-header">Marka</th>
+                        <th className="table-header">Model</th>
+                        <th className="table-header">Akcje</th>
                     </tr>
                     </thead>
                     <tbody>
                     {equipmentList.map((equipment) => (
-                        <tr
-                            key={equipment.equipmentId}
-                            style={{cursor: 'pointer'}}
-                            onClick={() => handleEquipmentClick(equipment.equipmentId)}
-                        >
-                            <td style={tableCellStyle} data-label="Nazwa Sprzętu">
+                        <tr key={equipment.equipmentId}>
+                            <td
+                                className="table-cell"
+                                onClick={() => handleEquipmentClick(equipment.equipmentId)}
+                            >
                                 {equipment.equipmentName}
                             </td>
-                            <td style={tableCellStyle} data-label="Kategoria">
-                                {equipment.category}
-                            </td>
-                            <td style={tableCellStyle} data-label="Marka">
-                                {equipment.brand}
-                            </td>
-                            <td style={tableCellStyle} data-label="Model">
-                                {equipment.model}
+                            <td className="table-cell">{equipment.category}</td>
+                            <td className="table-cell">{equipment.brand}</td>
+                            <td className="table-cell">{equipment.model}</td>
+                            <td className="table-cell">
+                                <button onClick={() => handleEditEquipment(equipment)} className="navbar-button edit-button">
+                                    Edytuj
+                                </button>
                             </td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
+                {showForm && (
+                    <EquipmentForm onClose={closeForm} equipmentData={editEquipmentData} />
+                )}
             </div>
-            {showAddForm && (
-                <EquipmentForm onClose={handleFormClose} />
-            )}
         </div>
     );
 };
-
-const tableHeaderStyle = {
-    borderBottom: '2px solid #ddd',
-    padding: '8px',
-    textAlign: 'left',
-};
-
-const tableCellStyle = {
-    borderBottom: '1px solid #ddd',
-    padding: '8px',
-};
-
 
 export default EquipmentList;

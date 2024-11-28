@@ -1,7 +1,8 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../Navbar/Navbar.jsx";
 import { useAuth } from '../../AuthContext.jsx';
+import './SignupUser.css'; // Importujemy plik CSS
 
 const SignupUser = () => {
     const { handleLogout, user } = useAuth();
@@ -18,6 +19,10 @@ const SignupUser = () => {
         password: '',
         phoneNumber: ''
     });
+
+    useEffect(() => {
+        document.title = 'Rejestracja użytkownika';
+    }, []);
 
     useEffect(() => {
         if (!user.roles.includes('ROLE_FARM_OWNER') && !user.roles.includes('ROLE_FARM_MANAGER')) {
@@ -115,64 +120,73 @@ const SignupUser = () => {
         }
     };
 
-
     return (
-        <div>
+        <div className="signup-user-container">
             <Navbar onLogout={handleLogout} userRole={userRole} username={user.username} />
-            <h2>Register User</h2>
+            <h2>Rejestracja użytkownika</h2>
             <form onSubmit={handleSubmit}>
-                {/* Fields for user registration */}
                 <input
                     type="text"
                     name="firstName"
-                    placeholder="First Name"
+                    placeholder="Imię"
                     value={formData.firstName}
                     onChange={handleInputChange}
+                    className="form-input"
                 />
                 <input
                     type="text"
                     name="lastName"
-                    placeholder="Last Name"
+                    placeholder="Nazwisko"
                     value={formData.lastName}
                     onChange={handleInputChange}
+                    className="form-input"
                 />
                 <input
                     type="text"
                     name="username"
-                    placeholder="Username"
+                    placeholder="Nazwa użytkownika"
                     value={formData.username}
                     onChange={handleInputChange}
+                    className="form-input"
                 />
                 <input
                     type="email"
                     name="email"
-                    placeholder="Email"
+                    placeholder="E-mail"
                     value={formData.email}
                     onChange={handleInputChange}
+                    className="form-input"
                 />
                 <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    placeholder="Hasło"
                     value={formData.password}
                     onChange={handleInputChange}
+                    className="form-input"
                 />
                 <input
                     type="text"
                     name="phoneNumber"
-                    placeholder="Phone Number (optional)"
+                    placeholder="Numer telefonu (opcjonalnie)"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
+                    className="form-input"
                 />
-                <select name="role" value={formData.role} onChange={handleRoleChange}>
+                <select
+                    name="role"
+                    value={formData.role}
+                    onChange={handleRoleChange}
+                    className="select-role"
+                >
                     <option value="ROLE_FARM_EQUIPMENT_OPERATOR">Operator</option>
                     <option value="ROLE_FARM_MANAGER">Manager</option>
-                    <option value="ROLE_FARM_OWNER">Właściciel</option>
+                    <option value="ROLE_FARM_OWNER">Owner</option>
                 </select>
-                <button type="submit">Submit</button>
+                <button type="submit" className="submit-button">Zatwierdź</button>
             </form>
-            {responseMessage && <p style={{ color: 'green' }}>{responseMessage}</p>}
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {responseMessage && <p className="success-message">{responseMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
     );
 };

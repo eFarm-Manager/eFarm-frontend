@@ -40,6 +40,7 @@ const App = () => {
                             <Route path="/equipment/:id" element={<EquipmentDetail />} />
                         </Route>
                         <Route path="/not-authorized" element={<NotAuthorized />} />
+
                     </Routes>
                 </div>
             </Router>

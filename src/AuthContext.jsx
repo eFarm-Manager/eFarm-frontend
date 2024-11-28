@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
             const username = sessionStorage.getItem('username');
             const roles = sessionStorage.getItem('roles');
             const storedExpireCodeInfo = sessionStorage.getItem('expireCodeInfo');
-            
+
             if (username && roles) {
                 setIsAuthenticated(true);
                 setUser({

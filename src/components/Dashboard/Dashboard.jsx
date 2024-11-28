@@ -1,28 +1,33 @@
-import {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
+import UserList from './UserList';
+import LandParcelList from '../AddLandparcel/LandParcelList';
+import './Dashboard.css'; // Dodanie pliku CSS dla stylów
 
 const Dashboard = () => {
     const { user, expireCodeInfo, handleLogout, handleExpireCodeInfoUpdate } = useAuth();
     const [showExpireCodeInfo, setShowExpireCodeInfo] = useState(!!expireCodeInfo);
     const [userRole, setUserRole] = useState('');
-
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = 'Gospodarstwo';
+    }, []);
 
     useEffect(() => {
         //const username = sessionStorage.getItem('username');
         // if (!user.username || !user.roles) {
         //     navigate('/sign-in');
         // }
-
         const userRole = user.roles.includes('ROLE_FARM_OWNER')
-        ? 'OWNER'
-        : user.roles.includes('ROLE_FARM_MANAGER')
-            ? 'MANAGER'
-            : user.roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
-                ? 'OPERATOR'
-                : 'OTHER_ROLE';
+            ? 'OWNER'
+            : user.roles.includes('ROLE_FARM_MANAGER')
+                ? 'MANAGER'
+                : user.roles.includes('ROLE_FARM_EQUIPMENT_OPERATOR')
+                    ? 'OPERATOR'
+                    : 'OTHER_ROLE';
         setUserRole(userRole);
     }, [navigate, user]);
 
@@ -34,18 +39,39 @@ const Dashboard = () => {
     const handleUpdate = () => {
         navigate('/new-activation-code');
     };
+
     return (
-        <div>
+        <div className="dashboard-container">
             <Navbar userRole={userRole} username={user.username} onLogout={handleLogout} />
-            <div style={{ padding: '20px' }}>
+            <div className="dashboard-content">
                 <h2>Witaj w panelu zarządzania, {user.username}!</h2>
-                {showExpireCodeInfo && expireCodeInfo &&(
-                    <div className="notification" style={{ border: '1px solid orange', padding: '10px', marginTop: '20px' }}>
+
+                {showExpireCodeInfo && expireCodeInfo && (
+                    <div className="notification">
                         <p>{expireCodeInfo}</p>
-                        <button onClick={handleOk}>OK</button>
-                        <button onClick={handleUpdate}>Aktualizuj</button>
+                        <div className="notification-buttons">
+                            <button onClick={handleOk} className="button-ok">OK</button>
+                            <button onClick={handleUpdate} className="button-update">Aktualizuj</button>
+                        </div>
                     </div>
                 )}
+
+                <div className="dashboard-segments">
+                    <div className="segment">
+                        <UserList />
+                    </div>
+                    {/* Segmenty 2-4: Można dodać później */}
+                    {/* <div className="segment">Segment 2</div>
+                    <div className="segment">Segment 3</div>
+                    <div className="segment">Segment 4</div> */}
+                </div>
+                {/* Segment 2: Lista działek */}
+                <div>
+                    <LandParcelList />
+                </div>
+                {/* Segmenty 3-4: Możesz dodać je później */}
+                {/* <div style={segmentStyle}>Segment 3</div>
+                <div style={segmentStyle}>Segment 4</div> */}
             </div>
         </div>
     );

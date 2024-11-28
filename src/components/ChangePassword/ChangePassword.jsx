@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { useAuth } from '../../AuthContext.jsx';
+import './ChangePassword.css';
 
 const ChangePassword = () => {
     const [formData, setFormData] = useState({
@@ -9,14 +10,23 @@ const ChangePassword = () => {
         newPassword: '',
         confirmNewPassword: '',
     });
+    const { user, isAuthenticated, userRoles, username } = useAuth();
 
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [userRole, setUserRole] = useState('');
-    const { user, handleLogout } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.title = 'Zmiana hasła';
+    }, []);
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/sign-in');
+            return;
+        }
+
         const userRole = user.roles.includes('ROLE_FARM_OWNER')
             ? 'OWNER'
             : user.roles.includes('ROLE_FARM_MANAGER')
@@ -25,7 +35,7 @@ const ChangePassword = () => {
                     ? 'OPERATOR'
                     : 'OTHER_ROLE';
         setUserRole(userRole);
-    }, [navigate, user]);
+    }, [navigate, isAuthenticated, userRoles, user]);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -89,12 +99,12 @@ const ChangePassword = () => {
     };
 
     return (
-        <div>
-            <Navbar onLogout={handleLogout} userRole={userRole} username={user.username} />
-            <div style={{ padding: '20px' }}>
-                <h2>Zmień hasło</h2>
-                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-                {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+        <div className="change-password-container">
+            <Navbar userRole={userRole} username={username} />
+            <div>
+                <h2>Zmiana hasła</h2>
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+                {successMessage && <p className="success-message">{successMessage}</p>}
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Aktualne hasło:</label>
