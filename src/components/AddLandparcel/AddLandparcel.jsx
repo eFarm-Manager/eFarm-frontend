@@ -32,6 +32,7 @@ const AddLandparcel = ({ onClose }) => {
             const areaNumber = parseFloat(areaString.replace(',', '.')); // Zamiana przecinka na kropkę
 
             const combinedData = {
+                ...selectedParcel,
                 ...parsedData,
                 'Pole pow. w ewidencji gruntów (ha)': areaNumber,
                 latitude: parseFloat(latitude),

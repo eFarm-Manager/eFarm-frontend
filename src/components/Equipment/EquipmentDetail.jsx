@@ -135,19 +135,19 @@ const EquipmentDetail = () => {
                     <p>
                         <strong>Model:</strong> {model}
                     </p>
-                    {power !== undefined && (
+                    {power != null && (
                         <p>
-                            <strong>Moc:</strong> {power}
+                            <strong>Moc [KM]:</strong> {power}
                         </p>
                     )}
-                    {capacity !== undefined && (
+                    {capacity != null && (
                         <p>
-                            <strong>Pojemność:</strong> {capacity}
+                            <strong>Pojemność [cm3]:</strong> {capacity}
                         </p>
                     )}
-                    {workingWidth !== undefined && (
+                    {workingWidth != null && (
                         <p>
-                            <strong>Szerokość Robocza:</strong> {workingWidth}
+                            <strong>Szerokość Robocza [m]:</strong> {workingWidth}
                         </p>
                     )}
                     {insurancePolicyNumber && (

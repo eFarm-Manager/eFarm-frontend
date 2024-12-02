@@ -14,7 +14,7 @@ const LandParcelList = () => {
     const [editParcelData, setEditParcelData] = useState(null);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [parcelToDelete, setParcelToDelete] = useState(null);
-    const { user, isAuthenticated } = useAuth();
+    const { user, userRoles, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,6 +23,7 @@ const LandParcelList = () => {
             return;
         }
 
+
         const userRole = user.roles.includes('ROLE_FARM_OWNER') || user.roles.includes('ROLE_FARM_MANAGER');
         if (!userRole) {
             navigate('/unauthorized');
@@ -30,7 +31,7 @@ const LandParcelList = () => {
         }
 
         fetchParcels();
-    }, [isAuthenticated, user, navigate]);
+    }, [isAuthenticated, user, navigate, userRoles]);
 
     const fetchParcels = async () => {
         try {
@@ -44,6 +45,10 @@ const LandParcelList = () => {
             // Replace the URL below with your backend API endpoint
             const response = await fetch(`/api/landparcel/all?${params.toString()}`, {
                 method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
             });
 
             if (!response.ok) {
@@ -96,6 +101,7 @@ const LandParcelList = () => {
             // Replace the URL below with your backend API endpoint
             const response = await fetch(`/api/landparcel/${parcelToDelete.id}`, {
                 method: 'DELETE',
+                credentials: 'include',
             });
 
             if (!response.ok) {

@@ -85,7 +85,7 @@ const UserList = () => {
                     // Aktualizuj stan użytkowników po zmianie statusu
                     setUsers(prevUsers =>
                         prevUsers.map(user =>
-                            user.id === userId ? { ...user, active: !user.active } : user
+                            user.id === userId ? { ...user, active: !user.isActive } : user
                         )
                     );
                 } else {
@@ -99,7 +99,7 @@ const UserList = () => {
         /*
         setUsers(prevUsers =>
             prevUsers.map(user =>
-                user.id === userId ? { ...user, active: !user.active } : user
+                user.id === userId ? { ...user, active: !isActive } : user
             )
         );
          */
@@ -140,10 +140,10 @@ const UserList = () => {
                         <td className="table-cell">{user.firstName}</td>
                         <td className="table-cell">{user.lastName}</td>
                         <td className="table-cell">{user.role}</td>
-                        <td className="table-cell">{user.active ? 'Tak' : 'Nie'}</td>
+                        <td className="table-cell">{user.isActive ? 'Tak' : 'Nie'}</td>
                         <td className="table-cell">
                             <button className="action-button" onClick={() => toggleActiveStatus(user.id)}>
-                                {user.active ? 'Dezaktywuj' : 'Aktywuj'}
+                                {user.isActive ? 'Dezaktywuj' : 'Aktywuj'}
                             </button>
                             <button className="action-button" onClick={() => handleChangePassword(user)}>
                                 Zmień Hasło
