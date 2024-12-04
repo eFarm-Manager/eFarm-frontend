@@ -8,6 +8,19 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
     const [fields, setFields] = useState([]);
     const [formData, setFormData] = useState(equipmentData || {});
 
+    const fieldLabels = {
+        equipmentName: 'Nazwa Sprzętu',
+        brand: 'Marka',
+        model: 'Model',
+        workingWidth: 'Szerokość Robocza [m]',
+        power: 'Moc [KM]',
+        insurancePolicyNumber: 'Numer Polisy Ubezpieczeniowej',
+        insuranceExpirationDate: 'Data Wygaśnięcia Ubezpieczenia',
+        inspectionExpireDate: 'Data Wygaśnięcia Przeglądu',
+        capacity: 'Pojemność [t]',
+        // Dodaj inne pola według potrzeb
+    };
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -32,13 +45,12 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
 
         fetchCategories();
 
-
         // Mockowane dane kategorii
         /*
         const mockCategories = [
-            { categoryName: 'Traktory', fields: ['equipmentName', 'category', 'brand', 'model', 'power'] },
-            { categoryName: 'Kombajny', fields: ['equipmentName', 'category', 'brand', 'model', 'capacity'] },
-            { categoryName: 'Pługi', fields: ['equipmentName', 'category', 'brand', 'model', 'workingWidth'] },
+            { categoryName: 'Traktory', fields: ['equipmentName', 'brand', 'model', 'power'] },
+            { categoryName: 'Kombajny', fields: ['equipmentName', 'brand', 'model', 'capacity'] },
+            { categoryName: 'Pługi', fields: ['equipmentName', 'brand', 'model', 'workingWidth'] },
             // Dodaj więcej kategorii według potrzeb
         ];
         setCategories(mockCategories);
@@ -83,7 +95,7 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const method = equipmentData ? 'PUT' : 'POST';
-        const url = equipmentData ? `/api/equipment/${equipmentData.equipmentId}`: '/api/equipment/new';
+        const url = equipmentData ? `/api/equipment/${equipmentData.equipmentId}` : '/api/equipment/new';
         try {
             // Oryginalny kod wysyłający dane do backendu
             const response = await fetch(url, {
@@ -139,29 +151,37 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
                     )}
                     {selectedCategory && (
                         <>
-                            {fields.map((field) => (
-                                <div key={field} className="form-group">
-                                    <label>{field}:</label>
-                                    <input
-                                        type="text"
-                                        name={field}
-                                        value={formData[field] || ''}
-                                        onChange={handleInputChange}
-                                        required={field === 'equipmentName' || field === 'brand' || field === 'model'}
-                                        className="form-input"
-                                    />
-                                </div>
-                            ))}
-                            <div className="form-buttons">
-                                <button type="submit" className="form-submit-button">
-                                    {equipmentData ? 'Zapisz Zmiany' : 'Dodaj Sprzęt'}
-                                </button>
-                                <button type="button" onClick={onClose} className="form-cancel-button">
-                                    Anuluj
-                                </button>
-                            </div>
+                            {fields
+                                .filter((field) => field !== 'category')
+                                .map((field) => (
+                                    <div key={field} className="form-group">
+                                        <label>{fieldLabels[field] || field}:</label>
+                                        <input
+                                            type="text"
+                                            name={field}
+                                            value={formData[field] || ''}
+                                            onChange={handleInputChange}
+                                            required={
+                                                field === 'equipmentName' ||
+                                                field === 'brand' ||
+                                                field === 'model'
+                                            }
+                                            className="form-input"
+                                        />
+                                    </div>
+                                ))}
                         </>
                     )}
+                    <div className="form-buttons">
+                        {selectedCategory && (
+                            <button type="submit" className="form-submit-button">
+                                {equipmentData ? 'Zapisz Zmiany' : 'Dodaj Sprzęt'}
+                            </button>
+                        )}
+                        <button type="button" onClick={onClose} className="form-cancel-button">
+                            Anuluj
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
