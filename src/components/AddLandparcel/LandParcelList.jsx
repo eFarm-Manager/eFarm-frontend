@@ -17,6 +17,11 @@ const LandParcelList = () => {
     const { user, userRoles, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
+    const ownershipStatusLabels = {
+        STATUS_LEASE: 'Dzierżawa',
+        STATUS_PRIVATELY_OWNED: 'Własność',
+    };
+
     useEffect(() => {
         if (!isAuthenticated) {
             navigate('/sign-in');
@@ -173,7 +178,10 @@ const LandParcelList = () => {
                         <td className="table-cell">{parcel.commune}</td>
                         <td className="table-cell">{parcel.landparcelNumber}</td>
                         <td className="table-cell">{parcel.area}</td>
-                        <td className="table-cell">{parcel.landOwnershipStatus}</td>
+                        <td className="table-cell">
+                            {ownershipStatusLabels[parcel.landOwnershipStatus] || parcel.landOwnershipStatus}
+                        </td>
+
                         <td className="table-cell">
                             <button onClick={() => handleEditParcel(parcel)} className="action-button">Edytuj</button>
                             <button onClick={() => handleDeleteParcel(parcel)} className="action-button">Usuń</button>
