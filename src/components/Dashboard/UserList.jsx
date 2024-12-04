@@ -93,7 +93,7 @@ const UserList = () => {
                     // Aktualizuj stan użytkowników po zmianie statusu
                     setUsers(prevUsers =>
                         prevUsers.map(user =>
-                            user.id === userId ? { ...user, active: !user.isActive } : user
+                            user.id === userId ? { ...user, isActive: !user.isActive } : user
                         )
                     );
                 } else {
