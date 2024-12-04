@@ -24,12 +24,13 @@ const LandParcelList = () => {
         }
 
 
-        const userRole = user.roles.includes('ROLE_FARM_OWNER') || user.roles.includes('ROLE_FARM_MANAGER');
+        //const userRole = user.roles.includes('ROLE_FARM_OWNER') || user.roles.includes('ROLE_FARM_MANAGER');
+        /*
         if (!userRole) {
             navigate('/unauthorized');
             return;
         }
-
+        */
         fetchParcels();
     }, [isAuthenticated, user, navigate, userRoles]);
 
