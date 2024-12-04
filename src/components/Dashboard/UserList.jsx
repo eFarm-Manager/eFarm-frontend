@@ -14,6 +14,14 @@ const UserList = () => {
     const [showEditUserModal, setShowEditUserModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
+    // Mapowanie ról na polskie nazwy
+    const roleLabels = {
+        'ROLE_FARM_OWNER': 'Właściciel gospodarstwa',
+        'ROLE_FARM_MANAGER': 'Manager gospodarstwa',
+        'ROLE_FARM_EQUIPMENT_OPERATOR': 'Operator sprzętu',
+        // Dodaj inne role według potrzeb
+    };
+
     useEffect(() => {
         if (!isAuthenticated) {
             navigate('/sign-in');
@@ -68,7 +76,7 @@ const UserList = () => {
         ];
         setUsers(mockUsers);
          */
-    }, [navigate, isAuthenticated, userRole, user]);
+    }, [navigate, isAuthenticated, user, userRole]);
 
     const toggleActiveStatus = (userId) => {
         // Oryginalny kod wysyłający żądanie do backendu
@@ -85,7 +93,7 @@ const UserList = () => {
                     // Aktualizuj stan użytkowników po zmianie statusu
                     setUsers(prevUsers =>
                         prevUsers.map(user =>
-                            user.id === userId ? { ...user, active: !user.isActive } : user
+                            user.id === userId ? { ...user, active: !user.active } : user
                         )
                     );
                 } else {
@@ -99,7 +107,7 @@ const UserList = () => {
         /*
         setUsers(prevUsers =>
             prevUsers.map(user =>
-                user.id === userId ? { ...user, active: !isActive } : user
+                user.id === userId ? { ...user, active: !user.active } : user
             )
         );
          */
@@ -139,11 +147,11 @@ const UserList = () => {
                     <tr key={user.id} className="table-row">
                         <td className="table-cell">{user.firstName}</td>
                         <td className="table-cell">{user.lastName}</td>
-                        <td className="table-cell">{user.role}</td>
-                        <td className="table-cell">{user.isActive ? 'Tak' : 'Nie'}</td>
+                        <td className="table-cell">{roleLabels[user.role] || user.role}</td>
+                        <td className="table-cell">{user.active ? 'Tak' : 'Nie'}</td>
                         <td className="table-cell">
                             <button className="action-button" onClick={() => toggleActiveStatus(user.id)}>
-                                {user.isActive ? 'Dezaktywuj' : 'Aktywuj'}
+                                {user.active ? 'Dezaktywuj' : 'Aktywuj'}
                             </button>
                             <button className="action-button" onClick={() => handleChangePassword(user)}>
                                 Zmień Hasło

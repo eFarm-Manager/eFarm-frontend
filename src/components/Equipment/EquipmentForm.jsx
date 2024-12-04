@@ -17,7 +17,7 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
         insurancePolicyNumber: 'Numer Polisy Ubezpieczeniowej',
         insuranceExpirationDate: 'Data Wygaśnięcia Ubezpieczenia',
         inspectionExpireDate: 'Data Wygaśnięcia Przeglądu',
-        capacity: 'Pojemność [t]',
+        capacity: 'Ładowność [t]',
         // Dodaj inne pola według potrzeb
     };
 
