@@ -5,6 +5,19 @@ export function ParcelForm({ parcelData, onChange, isEditMode }) {
     if (!parcelData) {
         return <p>Wybierz działkę, aby wyświetlić jej szczegóły.</p>;
     }
+    const fieldLabels = {
+        'Identyfikator działki': 'Identyfikator działki',
+        'landOwnershipStatus': 'Status Własności',
+        'name': 'Nazwa',
+        'Województwo': 'Województwo',
+        'Powiat': 'Powiat',
+        'Gmina': 'Gmina',
+        'Obręb': 'Numer Obrębu Ewidencyjnego',
+        'Numer działki': 'Numer działki',
+        'longitude': 'Długość geograficzna',
+        'latitude': 'Szerokość geograficzna',
+        'Pole pow. w ewidencji gruntów (ha)': 'Pole pow. w ewidencji gruntów (ha)',
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,125 +34,70 @@ export function ParcelForm({ parcelData, onChange, isEditMode }) {
     ];
 
     // Funkcja pomocnicza do określenia, czy pole jest edytowalne
-    const isFieldEditable = (fieldName) => {
-        if (!isEditMode) return true; // Jeśli nie jesteśmy w trybie edycji (czyli w trybie dodawania), wszystkie pola są edytowalne
-        return editableFieldsInEditMode.includes(fieldName);
+    const shouldFieldBeRendered = (fieldName) => {
+        if (isEditMode) {
+            // W trybie edycji wyświetlamy tylko pola, które są edytowalne
+            return editableFieldsInEditMode.includes(fieldName);
+        }
+        // W trybie "nie edycji" (np. dodawania) wyświetlamy wszystkie pola
+        return true;
+    };
+
+    const renderField = (fieldName, type = 'text', isSelect = false, options = []) => {
+        if (!shouldFieldBeRendered(fieldName)) return null;
+
+        const label = fieldLabels[fieldName] || fieldName;
+        const readOnly = isEditMode && !editableFieldsInEditMode.includes(fieldName);
+        const value = parcelData[fieldName] || '';
+
+        if (isSelect) {
+            return (
+                <div key={fieldName}>
+                    <label>{label}:</label>
+                    <select
+                        name={fieldName}
+                        value={value}
+                        onChange={handleChange}
+                        disabled={readOnly}
+                    >
+                        {options.map(opt => (
+                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                    </select>
+                </div>
+            );
+        }
+
+        return (
+            <div key={fieldName}>
+                <label>{label}:</label>
+                <input
+                    type={type}
+                    name={fieldName}
+                    value={value}
+                    onChange={handleChange}
+                    readOnly={readOnly}
+                />
+            </div>
+        );
     };
 
     return (
         <form>
-            <div>
-                <label>Identyfikator działki:</label>
-                <input
-                    type="text"
-                    name="Identyfikator działki"
-                    value={parcelData['Identyfikator działki'] || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('Identyfikator działki')}
-                />
-            </div>
-            <div>
-                <label>Status Własności:</label>
-                <select
-                    name="landOwnershipStatus"
-                    value={parcelData.landOwnershipStatus || 'STATUS_PRIVATELY_OWNED'}
-                    onChange={handleChange}
-                    disabled={!isFieldEditable('landOwnershipStatus')}
-                >
-                    <option value="STATUS_PRIVATELY_OWNED">Własność Prywatna</option>
-                    <option value="STATUS_LEASE">Dzierżawa</option>
-                </select>
-            </div>
-            <div>
-                <label>Nazwa:</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={parcelData.name || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('name')}
-                />
-            </div>
-            <div>
-                <label>Województwo:</label>
-                <input
-                    type="text"
-                    name="Województwo"
-                    value={parcelData['Województwo'] || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('Województwo')}
-                />
-            </div>
-            <div>
-                <label>Powiat:</label>
-                <input
-                    type="text"
-                    name="Powiat"
-                    value={parcelData['Powiat'] || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('Powiat')}
-                />
-            </div>
-            <div>
-                <label>Gmina:</label>
-                <input
-                    type="text"
-                    name="Gmina"
-                    value={parcelData['Gmina'] || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('Gmina')}
-                />
-            </div>
-            <div>
-                <label>Numer Obrębu Ewidencyjnego:</label>
-                <input
-                    type="text"
-                    name="Obręb"
-                    value={parcelData['Obręb'] || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('Obręb')}
-                />
-            </div>
-            <div>
-                <label>Numer Działki:</label>
-                <input
-                    type="text"
-                    name="Numer działki"
-                    value={parcelData['Numer działki'] || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('Numer działki')}
-                />
-            </div>
-            <div>
-                <label>Longitude:</label>
-                <input
-                    type="text"
-                    name="longitude"
-                    value={parcelData.longitude || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('longitude')}
-                />
-            </div>
-            <div>
-                <label>Latitude:</label>
-                <input
-                    type="text"
-                    name="latitude"
-                    value={parcelData.latitude || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('latitude')}
-                />
-            </div>
-            <div>
-                <label>Area:</label>
-                <input
-                    type="text"
-                    name="Pole pow. w ewidencji gruntów (ha)"
-                    value={parcelData['Pole pow. w ewidencji gruntów (ha)'] || ''}
-                    onChange={handleChange}
-                    readOnly={!isFieldEditable('Pole pow. w ewidencji gruntów (ha)')}
-                />
-            </div>
+            {renderField('Identyfikator działki')}
+            {renderField('landOwnershipStatus', 'text', true, [
+                {value: 'STATUS_PRIVATELY_OWNED', label: 'Własność Prywatna'},
+                {value: 'STATUS_LEASE', label: 'Dzierżawa'},
+            ])}
+            {renderField('name')}
+            {renderField('Województwo')}
+            {renderField('Powiat')}
+            {renderField('Gmina')}
+            {renderField('Obręb')}
+            {renderField('Numer działki')}
+            {renderField('longitude')}
+            {renderField('latitude')}
+            {renderField('Pole pow. w ewidencji gruntów (ha)')}
         </form>
     );
 }
