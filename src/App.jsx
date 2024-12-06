@@ -13,10 +13,13 @@ import EquipmentList from './components/Equipment/EquipmentList';
 import EquipmentDetail from './components/Equipment/EquipmentDetail';
 import LandingPage from './components/LandingPage/LandingPage';
 //import AddLandparcel from './components/AddLandparcel/AddLandparcel';
+import LandParcelList from "./components/AddLandparcel/LandParcelList.jsx";
+import LandParcelDetails from './components/AddLandparcel/LandParcelDetails';
 import './App.css';
 import "leaflet/dist/leaflet.css";
 import { AuthProvider } from './AuthContext.jsx';
 import ProtectedRoute from './ProtectedRoute';
+
 
 const App = () => {
     return (
@@ -38,6 +41,8 @@ const App = () => {
                             <Route path="/new-activation-code" element={<NewActivationCode />} />
                             <Route path="/equipment" element={<EquipmentList />} />
                             <Route path="/equipment/:id" element={<EquipmentDetail />} />
+                            <Route path="/landparcels" element={<LandParcelList />} />
+                            <Route path="/landparcel/:id" element={<LandParcelDetails />} />
                         </Route>
                         <Route path="/not-authorized" element={<NotAuthorized />} />
 

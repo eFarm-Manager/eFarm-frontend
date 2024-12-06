@@ -93,64 +93,66 @@ const SignupFarm = () => {
     return (
         <div className="signup-farm-container">
             <h2>Register Farm</h2>
-            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '400px' }}>
-                <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    onChange={handleInputChange}
-                    className="form-input"
-                />
-                <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    onChange={handleInputChange}
-                    className="form-input"
-                />
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    onChange={handleInputChange}
-                    className="form-input"
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    onChange={handleInputChange}
-                    className="form-input"
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={handleInputChange}
-                    className="form-input"
-                />
-                <input
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Phone Number"
-                    onChange={handleInputChange}
-                    className="form-input"
-                />
-                <input
-                    type="text"
-                    name="farmName"
-                    placeholder="Farm Name"
-                    onChange={handleInputChange}
-                    className="form-input"
-                />
-                <input
-                    type="text"
-                    name="activationCode"
-                    placeholder="Activation Code"
-                    onChange={handleInputChange}
-                    className="form-input"
-                />
-                <button type="submit" className="submit-button">Submit</button>
+            <form onSubmit={handleSubmit} style={{width: '100%', maxWidth: '400px'}}>
+                <div className="form-columns">
+                    <input
+                        type="text"
+                        name="firstName"
+                        placeholder="First Name"
+                        onChange={handleInputChange}
+                        className="form-input"
+                    />
+                    <input
+                        type="text"
+                        name="lastName"
+                        placeholder="Last Name"
+                        onChange={handleInputChange}
+                        className="form-input"
+                    />
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        onChange={handleInputChange}
+                        className="form-input"
+                    />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        onChange={handleInputChange}
+                        className="form-input"
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        onChange={handleInputChange}
+                        className="form-input"
+                    />
+                    <input
+                        type="text"
+                        name="phoneNumber"
+                        placeholder="Phone Number"
+                        onChange={handleInputChange}
+                        className="form-input"
+                    />
+                    <input
+                        type="text"
+                        name="farmName"
+                        placeholder="Farm Name"
+                        onChange={handleInputChange}
+                        className="form-input"
+                    />
+                    <input
+                        type="text"
+                        name="activationCode"
+                        placeholder="Activation Code"
+                        onChange={handleInputChange}
+                        className="form-input"
+                    />
+                </div>
+                    <button type="submit" className="submit-button">Submit</button>
             </form>
             {responseMessage && <p className="success-message">{responseMessage}</p>}
             {errorMessage && <p className="error-message">{errorMessage}</p>}

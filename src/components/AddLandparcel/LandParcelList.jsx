@@ -101,6 +101,10 @@ const LandParcelList = () => {
         setParcelToDelete(parcel);
         setShowDeleteConfirm(true);
     };
+    const handleViewDetails = (parcel) => {
+        navigate(`/landparcel/${parcel.id}`);
+    };
+
 
     const confirmDeleteParcel = async () => {
         try {
@@ -165,8 +169,8 @@ const LandParcelList = () => {
             <table className="user-list-table">
                 <thead>
                 <tr>
+                    <th className="table-header">Nazwa</th>
                     <th className="table-header">Gmina</th>
-                    <th className="table-header">Numer Działki</th>
                     <th className="table-header">Powierzchnia [ha]</th>
                     <th className="table-header">Status Własności</th>
                     <th className="table-header">Akcje</th>
@@ -175,14 +179,15 @@ const LandParcelList = () => {
                 <tbody>
                 {parcels.map((parcel) => (
                     <tr key={parcel.id} className="table-row">
+                        <td className="table-cell">{parcel.name}</td>
                         <td className="table-cell">{parcel.commune}</td>
-                        <td className="table-cell">{parcel.landparcelNumber}</td>
                         <td className="table-cell">{parcel.area}</td>
                         <td className="table-cell">
                             {ownershipStatusLabels[parcel.landOwnershipStatus] || parcel.landOwnershipStatus}
                         </td>
 
                         <td className="table-cell">
+                            <button onClick={() => handleViewDetails(parcel)} className="action-button">Szczegóły</button>
                             <button onClick={() => handleEditParcel(parcel)} className="action-button">Edytuj</button>
                             <button onClick={() => handleDeleteParcel(parcel)} className="action-button">Usuń</button>
                         </td>
