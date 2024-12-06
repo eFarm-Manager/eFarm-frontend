@@ -47,7 +47,7 @@ export function ParcelForm({ parcelData, onChange, isEditMode }) {
                     disabled={!isFieldEditable('landOwnershipStatus')}
                 >
                     <option value="STATUS_PRIVATELY_OWNED">Własność Prywatna</option>
-                    <option value="STATUS_LEASED">Dzierżawa</option>
+                    <option value="STATUS_LEASE">Dzierżawa</option>
                 </select>
             </div>
             <div>

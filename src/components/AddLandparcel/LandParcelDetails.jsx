@@ -54,7 +54,7 @@ const LandParcelDetails = () => {
             <p><strong>Status własności:</strong> {parcelDetails.landOwnershipStatus}</p>
             <p><strong>Województwo:</strong> {parcelDetails.voivodeship}</p>
             <p><strong>Powiat:</strong> {parcelDetails.district}</p>
-            <p><strong>Numer geodezyjny:</strong> {parcelDetails.geodesyRegistrationDistrictNumber}</p>
+            <p><strong>Numer geodezyjny:</strong> {parcelDetails.geodesyLandparcelNumber}</p>
             <p><strong>Szerokość geograficzna:</strong> {parcelDetails.latitude}</p>
             <p><strong>Długość geograficzna:</strong> {parcelDetails.longitude}</p>
             <button onClick={() => navigate(-1)} className="action-button">Powrót</button>
