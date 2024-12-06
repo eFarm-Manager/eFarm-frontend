@@ -1,36 +1,36 @@
 import { useState } from 'react';
-import { ParcelForm } from './AddLandparcelForm'; // Upewnij się, że ścieżka jest poprawna
+import { ParcelForm } from './AddLandparcelForm';
 import './AddLandparcel.css';
 import PropTypes from 'prop-types';
 
 const EditLandparcel = ({ onClose, parcelData }) => {
     const [selectedParcel, setSelectedParcel] = useState({
-        ...parcelData,
-        longitude: parcelData.longitude || '',
-        latitude: parcelData.latitude || '',
+        'Status własności': parcelData.landOwnershipStatus || 'STATUS_PRIVATELY_OWNED',
+        'Nazwa': parcelData.name || '',
+        'Długość geograficzna': parcelData.longitude || '',
+        'Szerokość geograficzna': parcelData.latitude || '',
+        'Pole pow. w ewidencji gruntów (ha)': parcelData.area || ''
     });
 
     const handleSubmit = async () => {
-        // Konwersja wartości na liczby i walidacja
-        const longitude = parseFloat(selectedParcel.longitude);
-        const latitude = parseFloat(selectedParcel.latitude);
+        const longitude = parseFloat(selectedParcel['Długość geograficzna']);
+        const latitude = parseFloat(selectedParcel['Szerokość geograficzna']);
         const area = parseFloat(selectedParcel['Pole pow. w ewidencji gruntów (ha)']);
+        const name = selectedParcel['Nazwa'] || '';
+        const landOwnershipStatus = selectedParcel['Status własności'] || 'STATUS_PRIVATELY_OWNED';
 
         if (isNaN(longitude) || isNaN(latitude) || isNaN(area)) {
             alert('Proszę wprowadzić poprawne wartości liczbowe dla długości, szerokości i powierzchni.');
             return;
         }
 
-        // Przygotowanie danych do wysłania do backendu
         const formData = {
-            landOwnershipStatus: selectedParcel.landOwnershipStatus || 'STATUS_PRIVATELY_OWNED',
-            name: selectedParcel.name || '',
+            landOwnershipStatus,
+            name,
             longitude,
             latitude,
             area,
         };
-
-        // Wyślij dane do backendu (zakomentowane dla przykładu)
 
         try {
           const response = await fetch(`/api/landparcel/${parcelData.id}`, {
@@ -50,14 +50,6 @@ const EditLandparcel = ({ onClose, parcelData }) => {
         } catch (error) {
           console.error('Error updating parcel:', error);
         }
-
-
-        // Akcja testowa
-        /*
-        console.log('Aktualizacja działki:', formData);
-        onClose();
-        */
-
 
     };
 

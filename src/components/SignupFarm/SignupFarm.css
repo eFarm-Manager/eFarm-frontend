@@ -19,11 +19,17 @@
     margin-bottom: 30px;
 }
 
+/* Kontener dla dwóch kolumn */
+.form-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px; /* Odstęp między kolumnami i polami */
+}
+
 /* Styl formularza */
 .form-input {
     width: 100%;
     padding: 12px;
-    margin: 10px 0;
     border: 2px solid #333;
     border-radius: 25px;
     background-color: #f0f0f0;
