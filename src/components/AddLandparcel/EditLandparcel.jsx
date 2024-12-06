@@ -5,19 +5,19 @@ import PropTypes from 'prop-types';
 
 const EditLandparcel = ({ onClose, parcelData }) => {
     const [selectedParcel, setSelectedParcel] = useState({
-        'Status własności': parcelData.landOwnershipStatus || 'STATUS_PRIVATELY_OWNED',
-        'Nazwa': parcelData.name || '',
-        'Długość geograficzna': parcelData.longitude || '',
-        'Szerokość geograficzna': parcelData.latitude || '',
-        'Pole pow. w ewidencji gruntów (ha)': parcelData.area || ''
+        landOwnershipStatus: parcelData.landOwnershipStatus || 'STATUS_PRIVATELY_OWNED',
+        name: parcelData.name || '',
+        longitude: parcelData.longitude || '',
+        latitude: parcelData.latitude || '',
+        area: parcelData.area || ''
     });
 
     const handleSubmit = async () => {
-        const longitude = parseFloat(selectedParcel['Długość geograficzna']);
-        const latitude = parseFloat(selectedParcel['Szerokość geograficzna']);
-        const area = parseFloat(selectedParcel['Pole pow. w ewidencji gruntów (ha)']);
-        const name = selectedParcel['Nazwa'] || '';
-        const landOwnershipStatus = selectedParcel['Status własności'] || 'STATUS_PRIVATELY_OWNED';
+        const longitude = parseFloat(selectedParcel.longitude);
+        const latitude = parseFloat(selectedParcel.latitude);
+        const area = parseFloat(selectedParcel.area);
+        const name = selectedParcel.name || '';
+        const landOwnershipStatus = selectedParcel.landOwnershipStatus || 'STATUS_PRIVATELY_OWNED';
 
         if (isNaN(longitude) || isNaN(latitude) || isNaN(area)) {
             alert('Proszę wprowadzić poprawne wartości liczbowe dla długości, szerokości i powierzchni.');
@@ -53,13 +53,21 @@ const EditLandparcel = ({ onClose, parcelData }) => {
 
     };
 
+    const fieldLabels = {
+        landOwnershipStatus: 'Status własności',
+        name: 'Nazwa',
+        longitude: 'Długość geograficzna',
+        latitude: 'Szerokość geograficzna',
+        area: 'Pole pow. w ewidencji gruntów (ha)'
+    };
+
     return (
         <div style={modalStyle}>
             <div style={modalContentStyle}>
                 <h3>Edytuj Działkę</h3>
                 <div className="parcel-container">
                     <div className="form-wrapper">
-                        <ParcelForm parcelData={selectedParcel} onChange={setSelectedParcel} isEditMode={true} />
+                        <ParcelForm parcelData={selectedParcel} onChange={setSelectedParcel} isEditMode={true} fieldLabels={fieldLabels}/>
                         {selectedParcel && (
                             <div style={{ marginTop: '20px' }}>
                                 <button onClick={handleSubmit} className="form-submit-button">
