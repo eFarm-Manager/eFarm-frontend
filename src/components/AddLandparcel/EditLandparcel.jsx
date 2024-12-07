@@ -29,7 +29,7 @@ const EditLandparcel = ({ onClose, parcelData }) => {
             name,
             longitude,
             latitude,
-            area
+            area,
         };
 
         try {
