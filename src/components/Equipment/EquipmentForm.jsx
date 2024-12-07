@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './EquipmentForm.css';
 
-const EquipmentForm = ({ onClose, equipmentData = null }) => {
+const EquipmentForm = ({onClose, equipmentData = null}) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(equipmentData ? equipmentData.category : '');
     const [fields, setFields] = useState([]);
@@ -83,12 +83,12 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-        setFormData({ category: e.target.value });
+        setFormData({category: e.target.value});
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
     };
 
     const handleSubmit = async (e) => {
@@ -103,7 +103,7 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ ...formData, category: selectedCategory }),
+                body: JSON.stringify({...formData, category: selectedCategory}),
             });
 
             if (response.ok) {
