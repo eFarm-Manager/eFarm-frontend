@@ -147,7 +147,7 @@ const EquipmentForm = ({ onClose, equipmentData = null }) => {
                             <label>Kategoria:</label>
                             <input
                                 type="text"
-                                placeholder="Wyszukaj kategorię"
+                                placeholder="Przefiltruj listę kategorii"
                                 value={searchCategory}
                                 onChange={handleSearchChange}
                                 className="form-input"
