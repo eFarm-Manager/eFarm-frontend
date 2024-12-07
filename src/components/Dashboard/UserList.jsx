@@ -13,7 +13,6 @@ const UserList = () => {
     const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
     const [showEditUserModal, setShowEditUserModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [errorMessage, setErrorMessage] = useState(null);
 
     const roleLabels = {
         'ROLE_FARM_OWNER': 'Właściciel gospodarstwa',
@@ -95,8 +94,6 @@ const UserList = () => {
                         )
                     );
                 } else {
-                    const data =  response.json();
-                    setErrorMessage(data.message);
                     console.error('Failed to toggle user active status');
                 }
             })
@@ -127,10 +124,6 @@ const UserList = () => {
         setShowChangePasswordModal(false);
         setShowEditUserModal(false);
         setSelectedUser(null);
-    };
-
-    const closePopup = () => {
-        setErrorMessage(null);
     };
 
     return (
@@ -175,21 +168,6 @@ const UserList = () => {
             )}
             {showEditUserModal && (
                 <EditUserModal user={selectedUser} onClose={closeModals} />
-            )}
-            {errorMessage && (
-                <div style={{
-                    position: 'fixed',
-                    top: '20%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    backgroundColor: 'red',
-                    color: 'white',
-                    padding: '10px',
-                    borderRadius: '5px'
-                }}>
-                    <span>{errorMessage}</span>
-                    <button onClick={closePopup} style={{ marginLeft: '10px', color: 'white', background: 'transparent', border: 'none' }}>Zamknij</button>
-                </div>
             )}
         </div>
     );
