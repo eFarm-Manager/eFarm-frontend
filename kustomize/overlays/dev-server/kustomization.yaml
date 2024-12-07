@@ -9,4 +9,4 @@ namespace: frontend
 
 images:
   - name: sprysio/efarm-frontend
-    newTag: develop-2758376ae35bf1427f4299e1f463fd0133e87d86
+    newTag: develop-40ccd5fcd5a0520b38da4d1e1b7559a431469b2e
