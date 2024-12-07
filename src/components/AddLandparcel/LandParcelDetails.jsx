@@ -9,6 +9,11 @@ const LandParcelDetails = () => {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
+    const ownershipStatusLabels = {
+        STATUS_LEASE: 'Dzierżawa',
+        STATUS_PRIVATELY_OWNED: 'Własność',
+    };
+
     useEffect(() => {
         if (!isAuthenticated) {
             navigate('/sign-in');
@@ -20,7 +25,6 @@ const LandParcelDetails = () => {
 
     const fetchParcelDetails = async () => {
         try {
-            // Replace the URL below with your backend API endpoint
             const response = await fetch(`/api/landparcel/${id}`, {
                 method: 'GET',
                 headers: {
@@ -51,7 +55,8 @@ const LandParcelDetails = () => {
             <p><strong>Gmina:</strong> {parcelDetails.commune}</p>
             <p><strong>Numer działki:</strong> {parcelDetails.landparcelNumber}</p>
             <p><strong>Powierzchnia:</strong> {parcelDetails.area} ha</p>
-            <p><strong>Status własności:</strong> {parcelDetails.landOwnershipStatus}</p>
+            {/*<p><strong>Status własności:</strong> {parcelDetails.landOwnershipStatus}</p>*/}
+            <p><strong>Status własności:</strong> {ownershipStatusLabels[parcelDetails.landOwnershipStatus] || parcelDetails.landOwnershipStatus}</p>
             <p><strong>Województwo:</strong> {parcelDetails.voivodeship}</p>
             <p><strong>Powiat:</strong> {parcelDetails.district}</p>
             <p><strong>Numer geodezyjny:</strong> {parcelDetails.geodesyLandparcelNumber}</p>

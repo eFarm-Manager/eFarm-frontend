@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { useAuth } from '../../AuthContext.jsx';
 import './SignIn.css'; // Importujemy plik CSS
 
@@ -25,10 +25,10 @@ const SignIn = () => {
 
     const validateForm = () => {
         if (!formData.username.trim()) {
-            return 'Username is required.';
+            return 'Nazwa użytkownika jest wymagana';
         }
         if (!formData.password.trim()) {
-            return 'Password is required.';
+            return 'Hasło jest wymagane';
         }
         return null;
     };
@@ -65,7 +65,7 @@ const SignIn = () => {
                     setErrorMessage(message);
                     sessionStorage.clear();
                 } else {
-                    setErrorMessage(message || 'Access denied.');
+                    setErrorMessage(message || 'Odmowa dostępu');
                     sessionStorage.clear();
                 }
             } else if (response.ok) {
@@ -76,32 +76,33 @@ const SignIn = () => {
                 handleLogin(expireCodeInfo);
                 navigate('/dashboard');
             } else {
-                setErrorMessage(data.message || 'Invalid login credentials.');
+                setErrorMessage(data.message || 'Nieprawidłowe dane logowania');
             }
         } catch (error) {
-            setErrorMessage(`Error: ${error.message}`);
+            setErrorMessage(`Błąd: ${error.message}`);
         }
     };
 
     return (
         <div className="sign-in-container">
-            <h2>Sign In</h2>
+            <h2>Zaloguj się</h2>
             <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '400px' }}>
                 <input
                     type="text"
                     name="username"
-                    placeholder="Username"
+                    placeholder="Nazwa użytkownika"
                     onChange={handleInputChange}
                     className="form-input"
                 />
                 <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    placeholder="Hasło"
                     onChange={handleInputChange}
                     className="form-input"
                 />
-                <button type="submit" className="submit-button">Submit</button>
+                <button type="submit" className="submit-button">Zaloguj</button>
+                <Link to="/">Powrót</Link>
             </form>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>

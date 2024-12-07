@@ -5,7 +5,6 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f0f0f0; /* Jasnoszare tło */
     font-family: 'Arial', sans-serif;
     color: #333;
     padding: 20px;
@@ -54,6 +53,14 @@
 
 .submit-button:hover {
     background-color: rgb(220, 140, 40); /* Ciemniejszy pomarańczowy */
+}
+
+.sign-in-container a {
+    color: rgb(250, 175, 55);
+}
+
+.sign-in-container a:hover{
+    color: rgb(220, 140, 40);
 }
 
 /* Styl dla komunikatów o błędzie */

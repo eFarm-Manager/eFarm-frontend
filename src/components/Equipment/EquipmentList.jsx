@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-import { useAuth } from '../../AuthContext.jsx';
+import {useAuth} from '../../AuthContext.jsx';
 import EquipmentForm from './EquipmentForm';
 import './EquipmentList.css';
 
@@ -11,7 +11,7 @@ const EquipmentList = () => {
     const [userRole, setUserRole] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [editEquipmentData, setEditEquipmentData] = useState(null);
-    const { user, username, isAuthenticated } = useAuth();
+    const {user, username, isAuthenticated} = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -137,7 +137,7 @@ const EquipmentList = () => {
 
     return (
         <div>
-            <Navbar userRole={userRole} username={username} />
+            <Navbar userRole={userRole} username={username}/>
             <div className="equipment-list-container">
                 <h2>Lista Sprzętu</h2>
                 <button onClick={handleAddEquipment} className="navbar-button add-equipment-button">
@@ -163,17 +163,17 @@ const EquipmentList = () => {
                     <tbody>
                     {equipmentList.map((equipment) => (
                         <tr key={equipment.equipmentId}>
-                            <td
-                                className="table-cell"
-                                onClick={() => handleEquipmentClick(equipment.equipmentId)}
-                            >
-                                {equipment.equipmentName}
-                            </td>
+                            <td className="table-cell">{equipment.equipmentName}</td>
                             <td className="table-cell">{equipment.category}</td>
                             <td className="table-cell">{equipment.brand}</td>
                             <td className="table-cell">{equipment.model}</td>
                             <td className="table-cell">
-                                <button onClick={() => handleEditEquipment(equipment)} className="navbar-button edit-button">
+                                <button onClick={() => handleEquipmentClick(equipment.equipmentId)}
+                                        className="navbar-button edit-button">
+                                    Szczegóły
+                                </button>
+                                <button onClick={() => handleEditEquipment(equipment)}
+                                        className="navbar-button edit-button">
                                     Edytuj
                                 </button>
                             </td>
@@ -182,7 +182,7 @@ const EquipmentList = () => {
                     </tbody>
                 </table>
                 {showForm && (
-                    <EquipmentForm onClose={closeForm} equipmentData={editEquipmentData} />
+                    <EquipmentForm onClose={closeForm} equipmentData={editEquipmentData}/>
                 )}
             </div>
         </div>

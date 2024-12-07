@@ -5,7 +5,6 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f0f0f0; /* Jasnoszare tło */
     font-family: 'Arial', sans-serif;
     color: #333;
     text-align: center;
@@ -48,15 +47,6 @@
     background-color: #388e3c; /* Ciemniejszy zielony kolor przy hoverze */
 }
 
-/* Link "Create a New Farm" - niebieski kolor tła */
-.landing-page a:last-of-type {
-    background-color: #2196f3; /* Niebieski kolor */
-}
-
-.landing-page a:last-of-type:hover {
-    background-color: #1976d2; /* Ciemniejszy niebieski kolor przy hoverze */
-}
-
 /* Responsywność */
 @media (max-width: 768px) {
     .landing-page h1 {
@@ -67,4 +57,12 @@
         font-size: 16px;
         padding: 10px 25px;
     }
+}
+
+.landing-page a {
+    color: #ffffff;
+}
+
+.landing-page a:hover{
+    color: #ffffff;
 }
