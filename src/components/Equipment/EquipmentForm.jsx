@@ -2,8 +2,10 @@ import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './EquipmentForm.css';
 
-const EquipmentForm = ({onClose, equipmentData = null}) => {
+const EquipmentForm = ({ onClose, equipmentData = null }) => {
     const [categories, setCategories] = useState([]);
+    const [filteredCategories, setFilteredCategories] = useState([]);
+    const [searchCategory, setSearchCategory] = useState('');
     const [selectedCategory, setSelectedCategory] = useState(equipmentData ? equipmentData.category : '');
     const [fields, setFields] = useState([]);
     const [formData, setFormData] = useState(equipmentData || {});
@@ -17,7 +19,7 @@ const EquipmentForm = ({onClose, equipmentData = null}) => {
         insurancePolicyNumber: 'Numer Polisy Ubezpieczeniowej',
         insuranceExpirationDate: 'Data Wygaśnięcia Ubezpieczenia',
         inspectionExpireDate: 'Data Wygaśnięcia Przeglądu',
-        capacity: 'Pojemność [m3]:',
+        capacity: 'Pojemność [m3]',
     };
 
     useEffect(() => {
@@ -34,6 +36,7 @@ const EquipmentForm = ({onClose, equipmentData = null}) => {
                 if (response.ok) {
                     const data = await response.json();
                     setCategories(data);
+                    setFilteredCategories(data);
                 } else {
                     console.error('Failed to fetch categories');
                 }
@@ -81,14 +84,24 @@ const EquipmentForm = ({onClose, equipmentData = null}) => {
         }
     }, [selectedCategory, categories]);
 
+    const handleSearchChange = (e) => {
+        const searchValue = e.target.value.toLowerCase();
+        setSearchCategory(searchValue);
+
+        const filtered = categories.filter((category) =>
+            category.categoryName.toLowerCase().includes(searchValue)
+        );
+        setFilteredCategories(filtered);
+    };
+
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-        setFormData({category: e.target.value});
+        setFormData({ category: e.target.value });
     };
 
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
@@ -96,14 +109,13 @@ const EquipmentForm = ({onClose, equipmentData = null}) => {
         const method = equipmentData ? 'PUT' : 'POST';
         const url = equipmentData ? `/api/equipment/${equipmentData.equipmentId}` : '/api/equipment/new';
         try {
-            // Oryginalny kod wysyłający dane do backendu
             const response = await fetch(url, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({...formData, category: selectedCategory}),
+                body: JSON.stringify({ ...formData, category: selectedCategory }),
             });
 
             if (response.ok) {
@@ -133,6 +145,13 @@ const EquipmentForm = ({onClose, equipmentData = null}) => {
                     {!equipmentData && (
                         <div>
                             <label>Kategoria:</label>
+                            <input
+                                type="text"
+                                placeholder="Wyszukaj kategorię"
+                                value={searchCategory}
+                                onChange={handleSearchChange}
+                                className="form-input"
+                            />
                             <select
                                 value={selectedCategory}
                                 onChange={handleCategoryChange}
@@ -140,7 +159,7 @@ const EquipmentForm = ({onClose, equipmentData = null}) => {
                                 className="form-select"
                             >
                                 <option value="">Wybierz kategorię</option>
-                                {categories.map((category) => (
+                                {filteredCategories.map((category) => (
                                     <option key={category.categoryName} value={category.categoryName}>
                                         {category.categoryName}
                                     </option>
