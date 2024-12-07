@@ -142,7 +142,7 @@ const EquipmentDetail = () => {
                     )}
                     {capacity != null && (
                         <p>
-                            <strong>Pojemność [cm3]:</strong> {capacity}
+                            <strong>Pojemność [m3]:</strong> {capacity}
                         </p>
                     )}
                     {workingWidth != null && (

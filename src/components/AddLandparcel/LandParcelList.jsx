@@ -145,7 +145,7 @@ const LandParcelList = () => {
             <form onSubmit={handleFilterSubmit} className="filter-form">
                 <input
                     type="text"
-                    placeholder="Wyszukaj (minimum 3 znaki)"
+                    placeholder="Wyszukaj"
                     value={searchQuery}
                     onChange={handleSearchChange}
                     className="search-input"
