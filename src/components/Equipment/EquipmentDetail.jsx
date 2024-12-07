@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-import { useAuth } from '../../AuthContext.jsx';
+import {useAuth} from '../../AuthContext.jsx';
 import './EquipmentDetail.css';
 
 const EquipmentDetail = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const [equipmentData, setEquipmentData] = useState(null);
     const [userRole, setUserRole] = useState('');
-    const { user, username, isAuthenticated } = useAuth();
+    const {user, username, isAuthenticated} = useAuth();
     const navigate = useNavigate();
 
     /*
@@ -96,7 +96,7 @@ const EquipmentDetail = () => {
     if (!equipmentData) {
         return (
             <div>
-                <Navbar userRole={userRole} username={username} />
+                <Navbar userRole={userRole} username={username}/>
                 <div className="loading-container">
                     <p>Ładowanie szczegółów sprzętu...</p>
                 </div>
@@ -119,7 +119,7 @@ const EquipmentDetail = () => {
 
     return (
         <div>
-            <Navbar userRole={userRole} username={username} />
+            <Navbar userRole={userRole} username={username}/>
             <div className="detail-container">
                 <h2>Szczegóły Sprzętu</h2>
                 <div className="equipment-details">

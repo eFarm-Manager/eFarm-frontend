@@ -48,7 +48,6 @@ const LandParcelList = () => {
             params.append('minArea', minArea);
             params.append('maxArea', maxArea);
 
-            // Replace the URL below with your backend API endpoint
             const response = await fetch(`/api/landparcel/all?${params.toString()}`, {
                 method: 'GET',
                 headers: {

@@ -11,6 +11,8 @@ const EquipmentList = () => {
     const [userRole, setUserRole] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [editEquipmentData, setEditEquipmentData] = useState(null);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [equipmentToDelete, setEquipmentToDelete] = useState(null);
     const {user, username, isAuthenticated} = useAuth();
     const navigate = useNavigate();
 
@@ -101,6 +103,26 @@ const EquipmentList = () => {
         }
     };
 
+    const confirmDeleteEquipment = async () => {
+        try {
+            const response = await fetch(`/api/equipment/${equipmentToDelete.equipmentId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Błąd podczas usuwania sprzętu: ${response.statusText}`);
+            }
+
+            await fetchEquipmentList(searchQuery);
+            setShowDeleteConfirm(false);
+            setEquipmentToDelete(null);
+        } catch (error) {
+            console.error('Error deleting equipment:', error);
+        }
+    };
+
+
     const handleSearchChange = (e) => {
         const query = e.target.value;
         setSearchQuery(query);
@@ -112,6 +134,11 @@ const EquipmentList = () => {
             // Użycie mockowanych danych
             // fetchMockEquipmentList(query);
         }
+    };
+
+    const handleDeleteEquipment = (equipment) => {
+        setEquipmentToDelete(equipment);
+        setShowDeleteConfirm(true);
     };
 
     const handleEquipmentClick = (equipmentId) => {
@@ -145,7 +172,7 @@ const EquipmentList = () => {
                 </button>
                 <input
                     type="text"
-                    placeholder="Wyszukaj (minimum 3 znaki)"
+                    placeholder="Wyszukaj"
                     value={searchQuery}
                     onChange={handleSearchChange}
                     className="search-input"
@@ -176,6 +203,10 @@ const EquipmentList = () => {
                                         className="navbar-button edit-button">
                                     Edytuj
                                 </button>
+                                <button onClick={() => handleDeleteEquipment(equipment)}
+                                        className="navbar-button edit-button">
+                                    Usuń
+                                </button>
                             </td>
                         </tr>
                     ))}
@@ -183,6 +214,15 @@ const EquipmentList = () => {
                 </table>
                 {showForm && (
                     <EquipmentForm onClose={closeForm} equipmentData={editEquipmentData}/>
+                )}
+                {showDeleteConfirm && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <p>Czy na pewno chcesz usunąć {equipmentToDelete?.equipmentName}?</p>
+                            <button onClick={confirmDeleteEquipment} className="modal-confirm-button">Tak</button>
+                            <button onClick={() => setShowDeleteConfirm(false)} className="modal-cancel-button">Nie</button>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>
